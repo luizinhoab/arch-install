@@ -204,8 +204,8 @@ dhcpcd
 # teste a conexao
 ping -c 3 www.google.com
 
-# instalar mixer da alsa
-pacman -S alsa-utils
+# sincronizar e instalar mixer da alsa
+pacman -Sy alsa-utils
 # ajuste o som, se desejar
 alsamixer
 
@@ -214,3 +214,9 @@ sudo pacman -S networkmanager networkmanager-vpnc networkmanager-pptp networkman
 
 # instalar xorg e ferramentas basicas
 sudo pacman -S xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
+
+# verifique a wiki e instale driver de video adequado a sua GPU
+# no meu caso e a nvidia
+sudo pacman -S nvidia nvidia-libgl
+
+# verifique a wiki e instale o seu ambiente grafico, no meu caso e o Gnome 3
