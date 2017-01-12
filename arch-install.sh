@@ -10,8 +10,11 @@ setfont lat4-19
 nano /etc/locale.gen
 # descomentar en_US UTF-8 e ISO
 # descomentar pt_BR UTF-8 e ISO
+# ctrl+o, enter para salvar... ctrl+x para sair do nano
+locale-gen
+export LANG=pt_BR.UTF-8
 
-# verificar conexao (wired)
+# testa conexao (wired) com a Internet
 ping -c 3 www.google.com
 
 # mostrar discos e particoes
@@ -77,3 +80,17 @@ genfstab -U -p /mnt >> /mnt/etc/fstab
 # verificar se fstab foi gerado conforme dados do "lsblk"
 # a particao de boot fica com path "none" mesmo
 cat /mnt/etc/fstab
+
+# logar na instalacao para definir inicializacao
+arch-chroot /mnt
+
+# agora, dentro da instalacao...
+# alterar lingua novamente... observando um comando a mais
+nano /etc/locale.gen
+# descomentar en_US UTF-8 e ISO
+# descomentar pt_BR UTF-8 e ISO
+# ctrl+o, enter para salvar... ctrl+x para sair do nano
+locale-gen
+# criar arquivo de configuracao de lingua
+echo LANG=pt_BR.UTF-8 > /etc/locale.conf
+export LANG=pt_BR.UTF-8
