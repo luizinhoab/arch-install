@@ -213,7 +213,7 @@ alsamixer
 # nao e o correto, mas na wiki cita os casos e nunca sei qual utilizar
 # (parece que um serve ao novo "wayland" e nao e la muito estavel 
 # se nenhum for escolhido agora, sera ao instalar o xorg / ambiente grafico
-sudo pacman -S xf86-input-libinput xf86-input-evdev
+sudo pacman -S --noconfirm xf86-input-libinput xf86-input-evdev
 
 # em alguma parte do processo seguinte ele pergunta pela
 # lib libx264 ou libx264-10bit, sendo essa segunda de raro uso e dependente de arquitetura
@@ -223,10 +223,10 @@ sudo pacman -S xf86-input-libinput xf86-input-evdev
 # no meu caso e a nvidia
 # lembrando que e bom instalar os drivers de video antes do XOrg e Gnome para evitar 
 # bindings ruins com mesa ou nouveau
-sudo pacman -S nvidia nvidia-libgl
+sudo pacman -S --noconfirm nvidia nvidia-libgl
 
 # instalar xorg e ferramentas basicas
-sudo pacman -S xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
+sudo pacman -S --noconfirm xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
 
 # instalar network manager caso nao esteja utilizando dhcpcd ou wpa como servico (como citado no passo opcional de redes) 
 # network manager e compativel com Gnome 3 (applet adiciona controles)
@@ -238,7 +238,7 @@ systemctl enable NetworkManager
 # podemos instalar o gnome, todas suas apps, jogos e ferramentas (pacotes "gnome" e "gnome-extra")
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
-sudo pacman -S gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center xdg-user-dirs gdm
+sudo pacman -S --noconfirm gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center xdg-user-dirs gdm
 
 # ative o gdm
 systemctl enable gdm
@@ -278,6 +278,7 @@ sudo pacman -Syu --noconfirm
 # instalar yaourt
 sudo pacman -S yaourt --noconfirm
 
+
 # configure um DNS bom pelo network manager
 # existe uma limitacao de 3 nameservers no resolv.conf
 # e bom usar 2 para ipv4 e um ipv6
@@ -296,14 +297,51 @@ gpg --recv-key 1EB2638FF56C0C53
 # instale o pacaur
 yaourt -S pacaur --noconfirm
 
+
 # instale "suas coisas" com o pacaur
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
-pacaur -S firefox google-chrome chrome-remote-desktop git docker plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission nvm openssh vim elementary-icon-theme terminator spotify empathy slack-desktop
+pacaur -S --noconfirm jdk firefox google-chrome chrome-remote-desktop git docker plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission nvm openssh vim elementary-icon-theme terminator spotify empathy slack-desktop 
 
-# opcionalmente, para evitar checks de seguranca e fazer o acesso ao HD mais rapido
+
+# (opcional) para evitar checks de seguranca e fazer o acesso ao HD mais rapido
 # edite o fstab e substitua "relatime" por "noatime" 
+# (ref: https://wiki.archlinux.org/index.php/fstab#atime_options)
 sudo nano /etc/fstab
 
+
+# (opcional) para fontes melhores, com antialiasing 
+# adicione ao /etc/pacman.conf
+# -------------------------------------
+[infinality-bundle]
+Server = http://bohoomil.com/repo/$arch
+
+[infinality-bundle-multilib]
+Server = http://bohoomil.com/repo/multilib/$arch
+
+[infinality-bundle-fonts]
+Server = http://bohoomil.com/repo/fonts
+# -------------------------------------
+# importe as chaves
+sudo pacman-key -r 962DDE58 && sudo pacman-key --lsign-key 962DDE58
+# instale o infinality bundle
+sudo pacman -Syyu && sudo pacman -S infinality-bundle
+sudo ln -fs /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/70-no-bitmaps.conf
+
+
+# (opcional) Better Gnome Terminal (fedora patches)
+# (abaixe o volume antes de abrir o video a seguir)
+# (ref: https://www.youtube.com/watch?v=zFtUtgKmQlU)
+pacaur -S gnome-terminal-fedora
+
+
+# desativa windows key da esquerda, mudando para a direita ou nenhuma
+gsettings set org.gnome.mutter overlay-key "Super_R"
+# gsettings set org.gnome.mutter overlay-key ""
+
+
+# -----------------------------------------------------------
 # nao instale o pacote "preload", atrapalha mais do que ajuda
+# -----------------------------------------------------------
+
 
 # EOF
