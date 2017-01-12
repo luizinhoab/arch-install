@@ -94,3 +94,82 @@ locale-gen
 # criar arquivo de configuracao de lingua
 echo LANG=pt_BR.UTF-8 > /etc/locale.conf
 export LANG=pt_BR.UTF-8
+
+# ----------------- opcional
+# nao e obrigatorio 
+# mas recomendo otimizar os mirrors
+# e otimizar o DNS (utilizando o do Google)
+nano /etc/resolv.conf
+# adicione "nameserver 8.8.8.8" antes de outros nameservers, sem aspas
+# salve com ctrl+o, enter
+nano /etc/pacman.d/mirrorlist
+# ctrl+k para apagar mirrors que nao sejam brasileiros (sao mais ou menos 5 brasileiros)
+# ctrl+o, enter para salvar
+# saia do nano e caminhe para a pasta de mirrors
+cd /etc/pacman.d/
+# rankeie os mirrors brasileiors (quanto mais mirrors, mais lento)
+rankmirrors mirrorlist
+# caminhe de volta para a home (alias "~")
+cd ~
+# ------------------ fim-opcional
+
+# definir configuracoes de teclado para persistir entre sessoes
+nano /etc/vconsole.conf
+# KEYMAP="br-abnt2.map.gz"
+# FONT=Lat2-Terminus16
+# FONT_MAP=
+# ctrl+o, enter, ctrl+x para salvar e sair do nano
+
+# procurar fuso horario (existe fusos para o Brazil e Americas compativeis)
+ls /usr/share/zoneinfo
+# dou preferencia ao fuso de Sao Paulo
+ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+
+# sincronizar o relogio de hardware com o sistema
+hwclock --systohc --utc
+
+# alguns tutoriais definem o servico de rede agora...
+# eu prefiro usar o dhcpcd manualmente e depois instalar o NetworkManager
+# que e compativel e habilita icones para o gnome 3
+# ----------------- opcional (rede)
+# WIRED
+# execute ip link e veja qual sua rede ether
+ip link
+# normalmente e "eth0" (formato antigo) ou "enp3s0" (formato novo e meu caso)
+systemctl enable dhcpcd@enp3s0.service
+#
+# WIRELESS
+pacman -S wireless_tools wpa_supplicant wpa_actiond netcf dialog
+systemctl enable net-auto-wireless.service
+# ----------------- fim-opcional (rede)
+
+# habilitar repositorio multi arquitetura (tipo o ia32 do Ubuntu)
+nano /etc/pacman.conf
+# descomente "[multilib]" e seus dados
+# ctrl+x, yes, enter para salvar
+
+# sincronizar multilib
+pacman -Sy
+
+# criar senha de root (opcional, recomendado... nao esqueca essa senha)
+passwd
+
+# criar usuario pessoal, substituindo "meulogin" pelo seu login desejado
+useradd -m -g users -G wheel,storage,power -s /bin/bash meulogin
+
+# alterar senha do login pessoal, substituindo "meulogin" pelo seu login desejado
+passwd meulogin
+
+# instalar sudo
+pacman -S sudo
+
+# editar as propriedades de sudo
+EDITOR=nano visudo
+# descomentar linha "%wheel ALL=(ALL) ALL"
+
+# baixar e instalar o GRUB BIOS
+pacman -S grub-bios
+grub-in
+
+
+
