@@ -188,8 +188,29 @@ exit
 umount /mnt/home
 umount /mnt
 
-# reiniciar
+# reinicie e defina a unidade de instalacao como primeira opcao de boot, na sua BIOS
 reboot
 
+# o sistema devera bootar no terminal do arch ja instalado, sem gerenciador grafico
+# realize o login
 
+# mude o hostname, substituindo meuhostname pelo nome desejado
+sudo hostnamectl set-hostname meuhostname
 
+# conectar o computador com a Internet (caso nao tenha habilitado o dhcpcd ou wpa anteriormente)
+# pode ser necessario usar sudo para o dhcpcd
+dhcpcd
+# ele demora alguns segundos (5 seg em media)
+# teste a conexao
+ping -c 3 www.google.com
+
+# instalar mixer da alsa
+pacman -S alsa-utils
+# ajuste o som, se desejar
+alsamixer
+
+# instalar network manager compativel com Gnome 3 (applet adiciona controles)
+sudo pacman -S networkmanager networkmanager-vpnc networkmanager-pptp networkmanager-openconnect network-manager-applet 
+
+# instalar xorg e ferramentas basicas
+sudo pacman -S xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
