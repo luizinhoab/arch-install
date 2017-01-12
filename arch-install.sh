@@ -248,3 +248,62 @@ systemctl enable gdm
 # em caso de erros, procure ler os logs do xorg e journalctl
 # ou verifique problemas de drivers de sua GPU
 # a wiki do Arch e uma das melhores entre comunidades Linux
+
+# prepara dirs de usuarios (xinitrc e pastas de pictures, documentos, etc)
+# talvez nao seja mais necessario no futuro (nem instalacao nem essa execucao)
+xdg-user-dirs-update
+
+# FIXME
+# configurar teclado abnt2
+# pode ser necessario executar como root (incerteza)
+# visivel apenas reiniciar sessao XOrg
+# nesse caso e "br abnt2" mesmo, sem hifen
+localectl set-x11-keymap br abnt2
+
+# adicionar AUR ao pacman
+sudo nano /etc/pacman.conf
+# adicione ao pacman.conf, proximo aos outros repositorios:
+# --------------------------------------
+[archlinuxfr]
+SigLevel = Never
+Server = http://repo.archlinux.fr/$arch
+# --------------------------------------
+
+# sincronize o pacman ao AUR
+sudo pacman -Syy --noconfirm
+
+# buscar atualizacoes
+sudo pacman -Syu --noconfirm
+
+# instalar yaourt
+sudo pacman -S yaourt --noconfirm
+
+# configure um DNS bom pelo network manager
+# existe uma limitacao de 3 nameservers no resolv.conf
+# e bom usar 2 para ipv4 e um ipv6
+# - gigadns: 189.38.95.95 / 2804:10:10::10 
+# - google DNS: 8.8.8.8 / 2001:4860:4860::8888
+# sem isso o gnupg nao consegue achar keyservers em ISPs ruins
+
+# popular pacman-key para uso futuro (opcional)
+sudo mkdir -p /root/.gnupg
+sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys
+
+# o pacaur e como o yaourt, com mais inteligencia e facilidades. compartilham as mesmas funcoes e instalacoes
+# adicione a chave para cower, dependencia do pacaur
+# pena que ambos nao sao paralelos como o, ja depreciado, "bauer"
+gpg --recv-key 1EB2638FF56C0C53
+# instale o pacaur
+yaourt -S pacaur --noconfirm
+
+# instale "suas coisas" com o pacaur
+# ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
+pacaur -S firefox google-chrome chrome-remote-desktop git docker plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission nvm openssh vim elementary-icon-theme terminator spotify empathy slack-desktop
+
+# opcionalmente, para evitar checks de seguranca e fazer o acesso ao HD mais rapido
+# edite o fstab e substitua "relatime" por "noatime" 
+sudo nano /etc/fstab
+
+# nao instale o pacote "preload", atrapalha mais do que ajuda
+
+# EOF
