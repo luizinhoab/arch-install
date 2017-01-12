@@ -169,7 +169,27 @@ EDITOR=nano visudo
 
 # baixar e instalar o GRUB BIOS
 pacman -S grub-bios
-grub-in
+# target i386 e o padrao e serve para 64-bits tambem
+# mais detalhes na wiki e google
+# recorra a outros tutoriais para definir melhor este comando para arquiteturas especificas
+# atencao para direcionar a instalacao para a raiz da unidade formatada no inicio do tutorial
+# ja que seu pc pode ter diversas memorias secundarias (USB inclusive)
+grub-install --target=i386-pc --recheck /dev/sdx
+# nao sei exatamente o que a proxima linha faz, mas funciona :)
+cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+
+# criar arquivo de configuracao do GRUB
+grub-mkconfig -O /boot/grub/grub.cfg
+
+# sair do arch-chroot
+exit
+
+# desmontar particoes
+umount /mnt/home
+umount /mnt
+
+# reiniciar
+reboot
 
 
 
