@@ -323,7 +323,7 @@ Server = http://bohoomil.com/repo/fonts
 # -------------------------------------
 # importe as chaves
 sudo pacman-key -r 962DDE58 && sudo pacman-key --lsign-key 962DDE58
-# instale o infinality bundle
+# instale o infinality bundle, respondendo "sim" para todo conflito (ex: cairo, freetype etc)
 sudo pacman -Syyu && sudo pacman -S infinality-bundle
 sudo ln -fs /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/70-no-bitmaps.conf
 
