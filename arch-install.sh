@@ -209,9 +209,6 @@ pacman -Sy alsa-utils
 # ajuste o som, se desejar
 alsamixer
 
-# instalar network manager compativel com Gnome 3 (applet adiciona controles)
-sudo pacman -S networkmanager networkmanager-vpnc networkmanager-pptp networkmanager-openconnect network-manager-applet
-
 # gosto de instalar o xf86-input-evdev e o xf86-input-libinput
 # nao e o correto, mas na wiki cita os casos e nunca sei qual utilizar
 # (parece que um serve ao novo "wayland" e nao e la muito estavel 
@@ -222,15 +219,20 @@ sudo pacman -S xf86-input-libinput xf86-input-evdev
 # lib libx264 ou libx264-10bit, sendo essa segunda de raro uso e dependente de arquitetura
 # (ver wiki, comentarios aqui: https://www.reddit.com/r/archlinux/comments/30khba/libx264_vs_libx26410bit/)
 
+# verifique a wiki e instale driver de video adequado a sua GPU
+# no meu caso e a nvidia
+# lembrando que e bom instalar os drivers de video antes do XOrg e Gnome para evitar 
+# bindings ruins com mesa ou nouveau
+sudo pacman -S nvidia nvidia-libgl
+
 # instalar xorg e ferramentas basicas
 sudo pacman -S xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
 
+# instalar network manager caso nao esteja utilizando dhcpcd ou wpa como servico (como citado no passo opcional de redes) 
+# network manager e compativel com Gnome 3 (applet adiciona controles)
+sudo pacman -S networkmanager networkmanager-vpnc networkmanager-pptp networkmanager-openconnect network-manager-applet
 # habilite o network manager, caso tenha instalado
 systemctl enable NetworkManager
-
-# verifique a wiki e instale driver de video adequado a sua GPU
-# no meu caso e a nvidia
-sudo pacman -S nvidia nvidia-libgl
 
 # verifique a wiki e instale o seu ambiente grafico, no meu caso e o Gnome 3
 # podemos instalar o gnome, todas suas apps, jogos e ferramentas (pacotes "gnome" e "gnome-extra")
@@ -245,5 +247,4 @@ systemctl enable gdm
 # o sistema devera exibir a tela de login do GDM
 # em caso de erros, procure ler os logs do xorg e journalctl
 # ou verifique problemas de drivers de sua GPU
-# lembrando que e bom instalar os drivers de video antes do XOrg e Gnome para evitar 
-# bindings ruins com mesa ou nouveau
+# a wiki do Arch e uma das melhores entre comunidades Linux
