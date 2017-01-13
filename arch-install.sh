@@ -213,7 +213,7 @@ alsamixer
 # nao e o correto, mas na wiki cita os casos e nunca sei qual utilizar
 # (parece que um serve ao novo "wayland" e nao e la muito estavel 
 # se nenhum for escolhido agora, sera ao instalar o xorg / ambiente grafico
-sudo pacman -S --noconfirm xf86-input-libinput xf86-input-evdev
+sudo pacman -S xf86-input-libinput xf86-input-evdev
 
 # em alguma parte do processo seguinte ele pergunta pela
 # lib libx264 ou libx264-10bit, sendo essa segunda de raro uso e dependente de arquitetura
@@ -223,10 +223,10 @@ sudo pacman -S --noconfirm xf86-input-libinput xf86-input-evdev
 # no meu caso e a nvidia
 # lembrando que e bom instalar os drivers de video antes do XOrg e Gnome para evitar 
 # bindings ruins com mesa ou nouveau
-sudo pacman -S --noconfirm nvidia nvidia-libgl nvidia-settings
+sudo pacman -S nvidia nvidia-libgl nvidia-settings
 
 # instalar xorg e ferramentas basicas
-sudo pacman -S --noconfirm xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
+sudo pacman -S xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
 
 # instalar network manager caso nao esteja utilizando dhcpcd ou wpa como servico (como citado no passo opcional de redes) 
 # network manager e compativel com Gnome 3 (applet adiciona controles)
@@ -238,7 +238,7 @@ systemctl enable NetworkManager
 # podemos instalar o gnome, todas suas apps, jogos e ferramentas (pacotes "gnome" e "gnome-extra")
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
-sudo pacman -S --noconfirm gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center xdg-user-dirs gdm
+sudo pacman -S gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center xdg-user-dirs gdm
 
 # ative o gdm
 systemctl enable gdm
@@ -276,7 +276,7 @@ sudo pacman -Syy --noconfirm
 sudo pacman -Syu --noconfirm
 
 # instalar yaourt
-sudo pacman -S yaourt --noconfirm
+sudo pacman -S yaourt
 
 
 # configure um DNS bom pelo network manager
@@ -288,7 +288,8 @@ sudo pacman -S yaourt --noconfirm
 
 # popular pacman-key para uso futuro (opcional)
 sudo mkdir -p /root/.gnupg
-sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys
+sudo pacman-key --init
+sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys
 
 # o pacaur e como o yaourt, com mais inteligencia e facilidades. compartilham as mesmas funcoes e instalacoes
 # adicione a chave para cower, dependencia do pacaur
@@ -322,10 +323,11 @@ Server = http://bohoomil.com/repo/multilib/$arch
 Server = http://bohoomil.com/repo/fonts
 # -------------------------------------
 # importe as chaves
-sudo pacman-key -r 962DDE58 && sudo pacman-key --lsign-key 962DDE58
+sudo pacman-key -r 962DDE58
+sudo pacman-key --lsign-key 962DDE58
 # instale o infinality bundle, respondendo "sim" para todo conflito (ex: cairo, freetype etc)
 # instala tambem fontes Google
-sudo pacman -S --noconfirm infinality-bundle ttf-google-fonts-git
+sudo pacman -S infinality-bundle ttf-google-fonts-git
 # better on LCD (LCD filter)
 sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d/11-lcdfilter-default.conf
 # FIXME link for what?
