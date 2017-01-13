@@ -269,11 +269,8 @@ SigLevel = Never
 Server = http://repo.archlinux.fr/$arch
 # --------------------------------------
 
-# sincronize o pacman ao AUR
-sudo pacman -Syy --noconfirm
-
-# buscar atualizacoes
-sudo pacman -Syu --noconfirm
+# sincronize o pacman ao AUR e atualizar
+sudo pacman -Syyu --noconfirm
 
 # instalar yaourt
 sudo pacman -S yaourt
