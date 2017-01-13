@@ -324,8 +324,12 @@ Server = http://bohoomil.com/repo/fonts
 # importe as chaves
 sudo pacman-key -r 962DDE58 && sudo pacman-key --lsign-key 962DDE58
 # instale o infinality bundle, respondendo "sim" para todo conflito (ex: cairo, freetype etc)
-sudo pacman -Syyu && sudo pacman -S infinality-bundle
-sudo ln -fs /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/70-no-bitmaps.conf
+# instala tambem fontes Microsoft e Google
+sudo pacman -Syyu && sudo pacman -S infinality-bundle ttf-ms-win10 ttf-google-fonts-git
+# FIXME link for what?
+# sudo ln -fs /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/70-no-bitmaps.conf
+# better on LCD (LCD filter)
+sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d/11-lcdfilter-default.conf
 
 
 # (opcional) Better Gnome Terminal (fedora patches)
