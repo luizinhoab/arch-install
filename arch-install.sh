@@ -306,27 +306,27 @@ pacaur -S --noconfirm jdk git p7zip firefox vlc virtualbox skype google-chrome c
 # (ref: https://wiki.archlinux.org/index.php/fstab#atime_options)
 sudo nano /etc/fstab
 
-
+# INFINALITY IS NOT REQUIRED ANYMORE. FREETYPE 2.7 is the ruler (https://github.com/bohoomil/fontconfig-ultimate/issues/171)
 # (opcional) para fontes melhores, com antialiasing 
 # adicione ao /etc/pacman.conf
 # -------------------------------------
-[infinality-bundle]
-Server = http://bohoomil.com/repo/$arch
-
-[infinality-bundle-multilib]
-Server = http://bohoomil.com/repo/multilib/$arch
-
-[infinality-bundle-fonts]
-Server = http://bohoomil.com/repo/fonts
+# [infinality-bundle]
+#Server = http://bohoomil.com/repo/$arch
+#
+#[infinality-bundle-multilib]
+#Server = http://bohoomil.com/repo/multilib/$arch
+#
+#[infinality-bundle-fonts]
+#Server = http://bohoomil.com/repo/fonts
 # -------------------------------------
 # importe as chaves
-sudo pacman-key -r 962DDE58
-sudo pacman-key --lsign-key 962DDE58
+#sudo pacman-key -r 962DDE58
+#sudo pacman-key --lsign-key 962DDE58
 # instale o infinality bundle, respondendo "sim" para todo conflito (ex: cairo, freetype etc)
 # instala tambem fontes Google
-sudo pacman -S infinality-bundle ttf-google-fonts-git
+#sudo pacman -S infinality-bundle ttf-google-fonts-git
 # better on LCD (LCD filter)
-sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d/11-lcdfilter-default.conf
+#sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d/11-lcdfilter-default.conf
 # FIXME link for what?
 # sudo ln -fs /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/70-no-bitmaps.conf
 
