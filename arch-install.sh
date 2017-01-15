@@ -167,6 +167,9 @@ pacman -S sudo
 EDITOR=nano visudo
 # descomentar linha "%wheel ALL=(ALL) ALL"
 
+# instala o Intel microcode para processadores Intel
+pacman -S intel-ucode
+
 # baixar e instalar o GRUB BIOS
 pacman -S grub-bios
 # target i386 e o padrao e serve para 64-bits tambem
