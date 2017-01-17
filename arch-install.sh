@@ -303,6 +303,9 @@ yaourt -S pacaur --noconfirm
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
 pacaur -S --noconfirm jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk nvm openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
 
+# Do source NVM functionality for Bash (or ZSH)
+echo 'source /usr/share/nvm/init-nvm.sh' > .bashrc
+# echo 'source /usr/share/nvm/init-nvm.sh' > .zshrc
 
 # (opcional) para evitar checks de seguranca e fazer o acesso ao HD mais rapido
 # edite o fstab e substitua "relatime" por "noatime" 
