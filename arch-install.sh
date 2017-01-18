@@ -301,11 +301,7 @@ yaourt -S pacaur --noconfirm
 
 # instale "suas coisas" com o pacaur
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
-pacaur -S --noconfirm jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk nvm openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
-
-# Do source NVM functionality for Bash (or ZSH)
-echo 'source /usr/share/nvm/init-nvm.sh' > .bashrc
-# echo 'source /usr/share/nvm/init-nvm.sh' > .zshrc
+pacaur -S --noconfirm jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
 
 # (opcional) para evitar checks de seguranca e fazer o acesso ao HD mais rapido
 # edite o fstab e substitua "relatime" por "noatime" 
@@ -346,10 +342,18 @@ pacaur -S gnome-terminal-fedora
 gsettings set org.gnome.mutter overlay-key "Super_R"
 # gsettings set org.gnome.mutter overlay-key ""
 
-
 # -----------------------------------------------------------
 # nao instale o pacote "preload", atrapalha mais do que ajuda
 # -----------------------------------------------------------
 
+
+# instalar NVM, Node.js e modulos globais mais utilizados
+pacaur -S nvm
+# Do source NVM functionality for Bash (or ZSH)
+echo 'source /usr/share/nvm/init-nvm.sh' > .bashrc
+# echo 'source /usr/share/nvm/init-nvm.sh' > .zshrc
+nvm install 7
+nvm use 7
+npm i -g gulp grunt electron pm2 express-generator pug
 
 # EOF
