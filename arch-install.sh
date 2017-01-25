@@ -301,7 +301,7 @@ yaourt -S pacaur --noconfirm
 
 # instale "suas coisas" com o pacaur
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
-pacaur -S --noconfirm jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
+pacaur -S --noconfirm jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
 
 # (opcional) para evitar checks de seguranca e fazer o acesso ao HD mais rapido
 # edite o fstab e substitua "relatime" por "noatime" 
