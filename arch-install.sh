@@ -347,7 +347,7 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 # -----------------------------------------------------------
 
 # Extensões Gnome 3f
-pacaur -S --noedit gnome-shell-extension-dynamic-top-bar-git gnome-shell-extensions gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-drop-down-terminal-git
+pacaur -S --noedit gnome-shell-extensions gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-drop-down-terminal-git
 
 # instalar NVM, Node.js e modulos globais mais utilizados
 pacaur -S nvm
