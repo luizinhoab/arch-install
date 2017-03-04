@@ -296,12 +296,12 @@ sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys
 # pena que ambos nao sao paralelos como o, ja depreciado, "bauer"
 gpg --recv-key 1EB2638FF56C0C53
 # instale o pacaur
-yaourt -S pacaur --noconfirm
+yaourt -S pacaur 
 
 
 # instale "suas coisas" com o pacaur
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
-pacaur -S --noconfirm jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
+pacaur -S --noedit jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
 
 # (opcional) para evitar checks de seguranca e fazer o acesso ao HD mais rapido
 # edite o fstab e substitua "relatime" por "noatime" 
@@ -346,6 +346,8 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 # nao instale o pacote "preload", atrapalha mais do que ajuda
 # -----------------------------------------------------------
 
+# Extensões Gnome 3f
+pacaur -S --noedit gnome-shell-extension-dynamic-top-bar-git gnome-shell-extensions gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-drop-down-terminal-git
 
 # instalar NVM, Node.js e modulos globais mais utilizados
 pacaur -S nvm
