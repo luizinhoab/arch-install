@@ -346,7 +346,7 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 # nao instale o pacote "preload", atrapalha mais do que ajuda
 # -----------------------------------------------------------
 
-# Extensões Gnome 3f
+# Extensões Gnome 3
 pacaur -S --noedit gnome-shell-extensions gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-drop-down-terminal-git
 
 # instalar NVM, Node.js e modulos globais mais utilizados
