@@ -241,7 +241,7 @@ systemctl enable NetworkManager
 # podemos instalar o gnome, todas suas apps, jogos e ferramentas (pacotes "gnome" e "gnome-extra")
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
-sudo pacman -S gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center xdg-user-dirs gdm
+sudo pacman -S gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-disk-utility xdg-user-dirs gdm
 
 # ative o gdm
 systemctl enable gdm
