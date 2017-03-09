@@ -229,7 +229,8 @@ sudo pacman -S xf86-input-libinput xf86-input-evdev
 sudo pacman -S nvidia nvidia-libgl nvidia-settings
 
 # instalar xorg e ferramentas basicas
-sudo pacman -S xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
+# force refaz alguns bindings por causa do driver NVIDIA
+sudo pacman -S --force xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
 
 # instalar network manager caso nao esteja utilizando dhcpcd ou wpa como servico (como citado no passo opcional de redes) 
 # network manager e compativel com Gnome 3 (applet adiciona controles)
@@ -241,7 +242,8 @@ systemctl enable NetworkManager
 # podemos instalar o gnome, todas suas apps, jogos e ferramentas (pacotes "gnome" e "gnome-extra")
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
-sudo pacman -S gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-disk-utility xdg-user-dirs gdm
+# force refaz alguns bindings por causa do driver NVIDIA
+sudo pacman -S --force gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-disk-utility xdg-user-dirs gdm
 
 # ative o gdm
 systemctl enable gdm
@@ -348,6 +350,9 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 
 # Extensões Gnome 3
 pacaur -S --noedit gnome-shell-extensions gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-drop-down-terminal-git
+
+# Permite que Google Chrome instale extensões do site Gnome
+pacaur -S --noedit chrome-gnome-shell-git
 
 # instalar NVM, Node.js e modulos globais mais utilizados
 pacaur -S nvm
