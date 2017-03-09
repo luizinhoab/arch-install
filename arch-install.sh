@@ -182,7 +182,7 @@ grub-install --target=i386-pc --recheck /dev/sdx
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 
 # criar arquivo de configuracao do GRUB
-grub-mkconfig -O /boot/grub/grub.cfg
+grub-mkconfig -o /boot/grub/grub.cfg
 
 # sair do arch-chroot
 exit
@@ -243,7 +243,7 @@ systemctl enable NetworkManager
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
 # force refaz alguns bindings por causa do driver NVIDIA
-sudo pacman -S --force gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-disk-utility xdg-user-dirs gdm
+sudo pacman -S --force gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm
 
 # ative o gdm
 systemctl enable gdm
