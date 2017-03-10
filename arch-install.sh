@@ -230,7 +230,7 @@ sudo pacman -S nvidia nvidia-libgl nvidia-settings
 
 # instalar xorg e ferramentas basicas
 # force refaz alguns bindings por causa do driver NVIDIA
-sudo pacman -S --force xorg-server xorg-init xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
+sudo pacman -S --force xorg-server xorg-xinit xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
 
 # instalar network manager caso nao esteja utilizando dhcpcd ou wpa como servico (como citado no passo opcional de redes) 
 # network manager e compativel com Gnome 3 (applet adiciona controles)
@@ -243,7 +243,7 @@ systemctl enable NetworkManager
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
 # force refaz alguns bindings por causa do driver NVIDIA
-sudo pacman -S --force gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm
+sudo pacman -S --force gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm vinagre seahorse polari eog gnome-characters gnome-logs
 
 # ative o gdm
 systemctl enable gdm
