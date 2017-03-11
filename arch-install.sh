@@ -349,7 +349,7 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 # -----------------------------------------------------------
 
 # Extensões Gnome 3
-pacaur -S --noedit gnome-shell-extensions gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-drop-down-terminal-git
+pacaur -S --noedit gnome-shell-extensions gnome-shell-system-monitor-applet-git gnome-shell-extension-coverflow-alt-tab-git
 
 # Permite que Google Chrome instale extensões do site Gnome
 pacaur -S --noedit chrome-gnome-shell-git
