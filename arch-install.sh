@@ -226,7 +226,8 @@ sudo pacman -S xf86-input-libinput xf86-input-evdev
 # no meu caso e a nvidia
 # lembrando que e bom instalar os drivers de video antes do XOrg e Gnome para evitar 
 # bindings ruins com mesa ou nouveau
-sudo pacman -S nvidia nvidia-libgl nvidia-settings
+#sudo pacman -S nvidia nvidia-libgl lib32-nvidia-libgl nvidia-settings
+sudo pacman -S nvidia-utils lib32-nvidia-utils nvidia-settings
 
 # instalar xorg e ferramentas basicas
 # force refaz alguns bindings por causa do driver NVIDIA
