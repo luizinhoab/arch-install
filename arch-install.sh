@@ -146,6 +146,8 @@ systemctl enable net-auto-wireless.service
 # habilitar repositorio multi arquitetura (tipo o ia32 do Ubuntu)
 nano /etc/pacman.conf
 # descomente "[multilib]" e seus dados
+# descomente "Color" para ter cores
+# insira "ILoveCandy" depois de "Color" para ativar o loading do Pac-Man
 # ctrl+x, yes, enter para salvar
 
 # sincronizar multilib
