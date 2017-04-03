@@ -317,42 +317,15 @@ pacaur -S --noedit jdk git p7zip firefox vlc virtualbox skype google-chrome chro
 sudo nano /etc/fstab
 
 # INFINALITY IS NOT REQUIRED ANYMORE. FREETYPE 2.7 is the ruler (https://github.com/bohoomil/fontconfig-ultimate/issues/171)
-# (opcional) para fontes melhores, com antialiasing 
-# adicione ao /etc/pacman.conf
-# -------------------------------------
-# [infinality-bundle]
-#Server = http://bohoomil.com/repo/$arch
-#
-#[infinality-bundle-multilib]
-#Server = http://bohoomil.com/repo/multilib/$arch
-#
-#[infinality-bundle-fonts]
-#Server = http://bohoomil.com/repo/fonts
-# -------------------------------------
-# importe as chaves
-#sudo pacman-key -r 962DDE58
-#sudo pacman-key --lsign-key 962DDE58
-# instale o infinality bundle, respondendo "sim" para todo conflito (ex: cairo, freetype etc)
-# instala tambem fontes Google
-#sudo pacman -S infinality-bundle ttf-google-fonts-git
-# better on LCD (LCD filter)
-#sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d/11-lcdfilter-default.conf
-# FIXME link for what?
-# sudo ln -fs /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d/70-no-bitmaps.conf
-
-# (opcional) Better Gnome Terminal (fedora patches)
-# (abaixe o volume antes de abrir o video a seguir)
-# (ref: https://www.youtube.com/watch?v=zFtUtgKmQlU)
-pacaur -S gnome-terminal-fedora
 
 
 # desativa windows key da esquerda, mudando para a direita ou nenhuma
 gsettings set org.gnome.mutter overlay-key "Super_R"
 # gsettings set org.gnome.mutter overlay-key ""
 
-# -----------------------------------------------------------
-# nao instale o pacote "preload", atrapalha mais do que ajuda
-# -----------------------------------------------------------
+# -------------------------------------------------------------------------
+# nao instale o pacote "preload", atrapalha mais do que ajuda em gaming PCs
+# -------------------------------------------------------------------------
 
 # Extensões Gnome 3
 pacaur -S --noedit gnome-shell-extensions gnome-shell-system-monitor-applet-git gnome-shell-extension-coverflow-alt-tab-git
@@ -367,6 +340,6 @@ echo 'source /usr/share/nvm/init-nvm.sh' > .bashrc
 # echo 'source /usr/share/nvm/init-nvm.sh' > .zshrc
 nvm install 7
 nvm use 7
-npm i -g gulp grunt electron pm2 express-generator pug
+npm i -g gulp grunt webpack electron pm2 express-generator nodemon
 
 # EOF
