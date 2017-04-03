@@ -1,12 +1,14 @@
-# a instalacao e iniciada como sudo automaticamente
+# O live ISO do Arch é um CLI
+# a instalação é iniciada como sudo automaticamente
+# siga os passos...
 
-# define teclado abnt2
+# definir teclado abnt2 para live boot
 loadkeys br-abnt2
 
-# aumenta fonte do terminal
+# aumenta fonte do terminal do live boot
 setfont lat4-19
 
-# altera lingua para instalacao
+# altera língua para instalação 
 nano /etc/locale.gen
 # descomentar en_US UTF-8 e ISO
 # descomentar pt_BR UTF-8 e ISO
@@ -14,18 +16,19 @@ nano /etc/locale.gen
 locale-gen
 export LANG=pt_BR.UTF-8
 
-# testa conexao (wired) com a Internet
+# testa conexão (wired) com a Internet
 ping -c 3 www.google.com
 
-# mostrar discos e particoes
+# mostrar discos e partições
 fdisk -l
 
-# gerenciar particoes com cfdisk (outras opcoes na wiki do Arch)
-cfdisk /dev/sdx
+# Instruções para formatação em disco GPT. Ver Arch Wiki para instruções sobre MBR.
 # GPT requer particao de boot...
-# criar particao de boot com no minimo 2M, tipo BIOS LINUX / BOOT
-# criar particao para swap (tipo "Linux swap") ideal do mesmo tamanho da RAM (ex: 8GB)
-# criar outras particoes conforme desejo de uso (Linux filesystem, ext4)
+# gerenciar particoes é bem fácil com cfdisk (outras opcoes na wiki do Arch)
+cfdisk /dev/sdx
+# criar partição de boot com no mínimo 2M, tipo BIOS LINUX / BOOT
+# criar partição para swap (tipo "Linux swap") ideal do mesmo tamanho da RAM (ex: 8GB)
+# criar outras partições conforme desejo de uso (Linux filesystem, ext4)
 # executar write
 
 # exemplo de particionamento:
@@ -65,9 +68,10 @@ nano /etc/pacman.d/mirrorlist
 # ctrl+o, enter para salvar
 # saia do nano e caminhe para a pasta de mirrors
 cd /etc/pacman.d/
-# rankeie os mirrors brasileiors (quanto mais mirrors, mais lento)
+# rankeie os mirrors brasileiros 
+# (exclua mirrors de paises longinquos. Quanto mais mirrors, mais demora o ranking)
 rankmirrors mirrorlist
-# caminhe de volta para a home (alias "~")
+# walk de volta para a home (alias "~")
 cd ~
 # ------------------ fim-opcional
 
@@ -95,7 +99,7 @@ locale-gen
 echo LANG=pt_BR.UTF-8 > /etc/locale.conf
 export LANG=pt_BR.UTF-8
 
-# ----------------- opcional
+# ----- opcional
 # nao e obrigatorio 
 # mas recomendo otimizar os mirrors
 # e otimizar o DNS (utilizando o do Google)
@@ -111,7 +115,7 @@ cd /etc/pacman.d/
 rankmirrors mirrorlist
 # caminhe de volta para a home (alias "~")
 cd ~
-# ------------------ fim-opcional
+# ----- fim-opcional
 
 # definir configuracoes de teclado para persistir entre sessoes
 nano /etc/vconsole.conf
@@ -129,10 +133,11 @@ ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
 hwclock --systohc --utc
 
 # alguns tutoriais definem o servico de rede agora...
+# essa rede serve apenas para o live boot e não para a instalação final
 # eu prefiro usar o dhcpcd manualmente e depois instalar o NetworkManager
 # que e compativel e habilita icones para o gnome 3
-# ----------------- opcional (rede)
-# WIRED
+# ----- opcional (rede do live boot para instalacao de dependencias)
+# WIRED/ ETHERNET
 # execute ip link e veja qual sua rede ether
 ip link
 # normalmente e "eth0" (formato antigo) ou "enp3s0" (formato novo e meu caso)
@@ -141,7 +146,7 @@ systemctl enable dhcpcd@enp3s0.service
 # WIRELESS
 pacman -S wireless_tools wpa_supplicant wpa_actiond netcf dialog
 systemctl enable net-auto-wireless.service
-# ----------------- fim-opcional (rede)
+# ----- fim-opcional (rede para instalacao)
 
 # habilitar repositorio multi arquitetura (tipo o ia32 do Ubuntu)
 nano /etc/pacman.conf
@@ -214,17 +219,15 @@ pacman -Sy alsa-utils
 # ajuste o som, se desejar
 alsamixer
 
-# gosto de instalar o xf86-input-evdev e o xf86-input-libinput
-# nao e o correto, mas na wiki cita os casos e nunca sei qual utilizar
-# (parece que um serve ao novo "wayland" e nao e la muito estavel 
-# se nenhum for escolhido agora, sera ao instalar o xorg / ambiente grafico
-sudo pacman -S xf86-input-libinput xf86-input-evdev
+# xf86-input-libinput é o default, mas existem inputs para synaptics, evdev and wacom (ver Arch Wiki)
+# se nenhum for escolhido agora, deverá ser escolhido ao instalar o xorg / ambiente grafico
+sudo pacman -S xf86-input-libinput 
 
-# em alguma parte do processo seguinte ele pergunta pela
+# em alguma parte do processo seguinte existe uma decisão sobre
 # lib libx264 ou libx264-10bit, sendo essa segunda de raro uso e dependente de arquitetura
 # (ver wiki, comentarios aqui: https://www.reddit.com/r/archlinux/comments/30khba/libx264_vs_libx26410bit/)
 
-# verifique a wiki e instale driver de video adequado a sua GPU
+# verifique a wiki e instale driver de video adequado à sua GPU
 # no meu caso e a nvidia
 # lembrando que e bom instalar os drivers de video antes do XOrg e Gnome para evitar 
 # bindings ruins com mesa ou nouveau
