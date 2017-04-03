@@ -177,7 +177,9 @@ EDITOR=nano visudo
 # instala o Intel microcode para processadores Intel
 pacman -S intel-ucode
 
-# ver Arch Wiki como instalar GRUB UEFI, já que aqui utilizaremos o GRUB BIOS apenas
+# Existe a opção de instalar o GRUB BIOS ou UEFI.
+# Utilizaremos o GRUB BIOS. 
+# Ver Arch Wiki como instalar GRUB UEFI caso prefira/seja necessário para sua mobo...
 # baixar e instalar o GRUB BIOS
 pacman -S grub-bios
 # target i386 e o padrao e serve para 64-bits tambem
