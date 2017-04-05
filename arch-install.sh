@@ -314,6 +314,17 @@ yaourt -S pacaur
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
 pacaur -S --noedit jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
 
+# docker sem sudo
+sudo groupadd docker
+sudo gpasswd -a ${USER} docker
+sudo systemctl enable docker
+sudo systemctl start docker
+newgrp docker
+
+# plex-media systemd
+sudo systemctl enable plexmediaserver.service
+sudo systemctl start plexmediaserver.service
+
 # (opcional) para evitar checks de seguranca e fazer o acesso ao HD mais rapido
 # edite o fstab e substitua "relatime" por "noatime" 
 # (ref: https://wiki.archlinux.org/index.php/fstab#atime_options)
