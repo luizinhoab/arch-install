@@ -314,11 +314,12 @@ yaourt -S pacaur
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
 pacaur -S --noedit jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
 
-# docker sem sudo
-sudo groupadd docker
-sudo gpasswd -a ${USER} docker
+
+# Docker
 sudo systemctl enable docker
 sudo systemctl start docker
+# Docker sem sudo
+sudo gpasswd -a ${USER} docker
 newgrp docker
 
 # plex-media systemd
