@@ -358,7 +358,7 @@ nvm install 7
 nvm use 7
 npm i -g gulp grunt webpack electron pm2 express-generator nodemon
 
-# Configurar Git para utilizar o Gnome Keyring
+# Configurar Git para utilizar o Gnome Keyring (opcional e muito particular)
 # depois de instalados gnome-keyring e libsecret
 cd /usr/share/git/credential/gnome-keyring
 sudo make
