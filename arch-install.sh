@@ -245,17 +245,17 @@ sudo pacman -S --force xorg-server xorg-xinit xorg-server-utils mesa ttf-dejavu 
 # network manager e compativel com Gnome 3 (applet adiciona controles)
 sudo pacman -S networkmanager networkmanager-vpnc networkmanager-pptp networkmanager-openconnect network-manager-applet
 # habilite o network manager, caso tenha instalado
-systemctl enable NetworkManager
+sudo systemctl enable NetworkManager
 
 # verifique a wiki e instale o seu ambiente grafico, no meu caso e o Gnome 3
 # podemos instalar o gnome, todas suas apps, jogos e ferramentas (pacotes "gnome" e "gnome-extra")
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
 # force refaz alguns bindings por causa do driver NVIDIA
-sudo pacman -S --force gnome-shell nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm vinagre baobab seahorse polari eog gnome-characters gnome-logs
+sudo pacman -S --force gnome-shell gnome-keyring libsecret seahorse nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm vinagre baobab polari eog gnome-characters gnome-logs
 
 # ative o gdm
-systemctl enable gdm
+sudo systemctl enable gdm
 
 # reinicie
 # o sistema devera exibir a tela de login do GDM
@@ -357,5 +357,11 @@ echo 'source /usr/share/nvm/init-nvm.sh' > .bashrc
 nvm install 7
 nvm use 7
 npm i -g gulp grunt webpack electron pm2 express-generator nodemon
+
+# Configurar Git para utilizar o Gnome Keyring
+# depois de instalados gnome-keyring e libsecret
+cd /usr/share/git/credential/gnome-keyring
+sudo make
+git config --global credential.helper /usr/lib/git-core/git-credential-gnome-keyring
 
 # EOF
