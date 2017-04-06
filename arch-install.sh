@@ -252,7 +252,7 @@ sudo systemctl enable NetworkManager
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
 # force refaz alguns bindings por causa do driver NVIDIA
-sudo pacman -S --force gnome-shell gnome-keyring libsecret seahorse nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm vinagre baobab polari eog gnome-characters gnome-logs
+sudo pacman -S --force ttf-dejavu gnome-shell gnome-keyring libsecret seahorse nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm vinagre baobab polari eog gnome-characters gnome-logs
 
 # ative o gdm
 sudo systemctl enable gdm
