@@ -252,7 +252,7 @@ sudo systemctl enable NetworkManager
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
 # force refaz alguns bindings por causa do driver NVIDIA
-sudo pacman -S --force ttf-dejavu gnome-shell gnome-keyring libsecret seahorse nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm vinagre baobab polari eog gnome-characters gnome-logs
+sudo pacman -S --force gnome-shell gnome-keyring libsecret seahorse nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm vinagre baobab polari eog gnome-characters gnome-logs
 
 # ative o gdm
 sudo systemctl enable gdm
@@ -312,7 +312,7 @@ yaourt -S pacaur
 
 # instale "suas coisas" com o pacaur
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
-pacaur -S --noedit jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
+pacaur -S --noedit ttf-ms-fonts jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
 
 
 # Docker
