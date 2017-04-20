@@ -344,7 +344,7 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 
 # Extensões Gnome 3
 # common Gnome extensions, status bar system usage monitor, tab change, audio device output changer 
-pacaur -S --noedit gnome-shell-extensions gnome-shell-system-monitor-applet-git gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-audio-output-switcher-git
+pacaur -S --noedit gnome-shell-extensions gnome-shell-system-monitor-applet-git gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-audio-output-switcher-git gtk-theme-arc-git
 
 
 # Permite que Google Chrome instale extensões do site Gnome
