@@ -239,7 +239,16 @@ sudo pacman -S nvidia-utils lib32-nvidia-utils nvidia-settings
 
 # instalar xorg e ferramentas basicas
 # force refaz alguns bindings por causa do driver NVIDIA
-sudo pacman -S --force xorg-server xorg-xinit xorg-server-utils mesa ttf-dejavu samba smbclient gvfs gvfs-smb sshfs
+sudo pacman -S --force xorg-server \
+                       xorg-xinit \
+                       xorg-server-utils \
+                       mesa \
+                       ttf-dejavu \
+                       samba \
+                       smbclient \
+                       gvfs \
+                       gvfs-smb \
+                       sshfs
 
 # instalar network manager caso nao esteja utilizando dhcpcd ou wpa como servico (como citado no passo opcional de redes) 
 # network manager e compativel com Gnome 3 (applet adiciona controles)
@@ -252,7 +261,24 @@ sudo systemctl enable NetworkManager
 # (sudo pacman -S gnome gnome-extra)
 # eu escolhi instalar o basico...
 # force refaz alguns bindings por causa do driver NVIDIA
-sudo pacman -S --force gnome-shell gnome-keyring libsecret seahorse nautilus gnome-terminal gnome-tweak-tool gnome-control-center gnome-system-monitor gnome-disk-utility xdg-user-dirs gdm vinagre baobab polari eog gnome-characters gnome-logs
+sudo pacman -S --force gnome-shell \
+                       gnome-keyring \
+                       libsecret \
+                       seahorse \
+                       nautilus \
+                       gnome-terminal \
+                       gnome-tweak-tool \
+                       gnome-control-center \
+                       gnome-system-monitor \
+                       gnome-disk-utility \
+                       xdg-user-dirs \
+                       gdm \
+                       vinagre \
+                       baobab \
+                       polari \
+                       eog \
+                       gnome-characters \
+                       gnome-logs\
 
 # ative o gdm
 sudo systemctl enable gdm
@@ -312,8 +338,34 @@ yaourt -S pacaur
 
 # instale "suas coisas" com o pacaur
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
-pacaur -S --noedit ttf-ms-fonts jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim terminator spotify empathy slack-desktop libreoffice-fresh 
-
+pacaur -S --noedit ttf-ms-fonts \
+                   jdk \
+                   git \
+                   p7zip \
+                   firefox \
+                   vlc \
+                   virtualbox \
+                   skype \
+                   google-chrome \
+                   chrome-remote-desktop \
+                   docker \
+                   gitkraken \
+                   plex-media-server \
+                   gimp \
+                   inkscape \
+                   steam-native-runtime \
+                   steam \
+                   atom \
+                   visual-studio-code \
+                   playonlinux \
+                   transmission-gtk \
+                   openssh \
+                   vim \
+                   terminator \
+                   spotify \
+                   empathy \
+                   slack-desktop \
+                   libreoffice-fresh 
 
 # Docker
 sudo systemctl enable docker
@@ -331,8 +383,8 @@ sudo systemctl start plexmediaserver.service
 # (ref: https://wiki.archlinux.org/index.php/fstab#atime_options)
 sudo nano /etc/fstab
 
-# INFINALITY IS NOT REQUIRED ANYMORE. FREETYPE 2.7 is the ruler (https://github.com/bohoomil/fontconfig-ultimate/issues/171)
-
+# INFINALITY IS NOT REQUIRED ANYMORE. FREETYPE 2.7+ HAS HINTING 
+# (https://github.com/bohoomil/fontconfig-ultimate/issues/171)
 
 # desativa windows key da esquerda, mudando para a direita ou nenhuma
 gsettings set org.gnome.mutter overlay-key "Super_R"
@@ -345,7 +397,15 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 # Extensões Gnome 3
 # common Gnome extensions, status bar system usage monitor, tab change, audio device output changer 
 # use Gnome Tweak Tool to configure themes, cursors and extensions
-pacaur -S --noedit gnome-shell-extensions gnome-shell-system-monitor-applet-git gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-audio-output-switcher-git gtk-theme-arc-git arc-icon-theme elementary-icon-theme
+pacaur -S --noedit gnome-shell-extensions \
+                   gnome-shell-system-monitor-applet-git \
+                   gnome-shell-extension-coverflow-alt-tab-git \
+                   gnome-shell-extension-audio-output-switcher-git \ 
+                   gtk-theme-arc-git \
+                   arc-icon-theme \
+                   elementary-icon-theme \
+                   adapta-gtk-theme \
+                   noto-fonts
 
 
 # Permite que Google Chrome instale extensões do site Gnome
