@@ -312,7 +312,7 @@ yaourt -S pacaur
 
 # instale "suas coisas" com o pacaur
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
-pacaur -S --noedit ttf-ms-fonts jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim elementary-icon-theme terminator spotify empathy slack-desktop libreoffice-fresh 
+pacaur -S --noedit ttf-ms-fonts jdk git p7zip firefox vlc virtualbox skype google-chrome chrome-remote-desktop docker gitkraken plex-media-server gimp inkscape steam-native-runtime steam atom visual-studio-code playonlinux transmission-gtk openssh vim terminator spotify empathy slack-desktop libreoffice-fresh 
 
 
 # Docker
@@ -344,7 +344,8 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 
 # Extensões Gnome 3
 # common Gnome extensions, status bar system usage monitor, tab change, audio device output changer 
-pacaur -S --noedit gnome-shell-extensions gnome-shell-system-monitor-applet-git gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-audio-output-switcher-git gtk-theme-arc-git
+# use Gnome Tweak Tool to configure themes, cursors and extensions
+pacaur -S --noedit gnome-shell-extensions gnome-shell-system-monitor-applet-git gnome-shell-extension-coverflow-alt-tab-git gnome-shell-extension-audio-output-switcher-git gtk-theme-arc-git arc-icon-theme elementary-icon-theme
 
 
 # Permite que Google Chrome instale extensões do site Gnome
