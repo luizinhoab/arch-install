@@ -355,8 +355,8 @@ pacaur -S nvm
 # Do source NVM functionality for Bash (or ZSH)
 echo 'source /usr/share/nvm/init-nvm.sh' > .bashrc
 # echo 'source /usr/share/nvm/init-nvm.sh' > .zshrc
-nvm install 7
-nvm use 7
+nvm install stable
+nvm use stable
 npm i -g gulp grunt webpack electron pm2 express-generator nodemon
 
 # Configurar Git para utilizar o Gnome Keyring (opcional e muito particular)
