@@ -390,9 +390,6 @@ sudo nano /etc/fstab
 gsettings set org.gnome.mutter overlay-key "Super_R"
 # gsettings set org.gnome.mutter overlay-key ""
 
-# desativa delay de 60 de logout do Gnome 3
-gsettings set org.gnome.SessionManager logout-prompt false
-
 # -------------------------------------------------------------------------
 # nao instale o pacote "preload", atrapalha mais do que ajuda em gaming PCs
 # -------------------------------------------------------------------------
