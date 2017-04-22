@@ -217,6 +217,50 @@ dhcpcd
 # teste a conexao
 ping -c 3 www.google.com
 
+
+# -------- Configurar AUR
+# adicionar AUR ao pacman
+sudo nano /etc/pacman.conf
+# adicione ao pacman.conf, proximo aos outros repositorios:
+# --------------------------------------
+[archlinuxfr]
+SigLevel = Never
+Server = http://repo.archlinux.fr/$arch
+# --------------------------------------
+
+# sincronize o pacman ao AUR e atualizar
+sudo pacman -Syyu --noconfirm
+
+# instalar yaourt
+sudo pacman -S yaourt
+
+# instalar o pacaur
+# o pacaur e como o yaourt, com mais inteligencias e facilidades. 
+# compartilham as mesmas funcoes, locks e instalacoes ja que sao baseados no pacman
+# adicione a chave para cower, dependencia do pacaur
+# pena que ambos nao sao paralelos como o, ja depreciado, "bauer"
+gpg --recv-key 1EB2638FF56C0C53
+# instale o pacaur
+yaourt -S pacaur 
+
+
+# ----- opcional
+# instalar e utilizar powerpill como backend paralelo, no lugar do pacman
+gpg --recv-keys 1D1F0DC78F173680
+pacaur -S powerpill
+# configure o .bashrc da home de usuario com o seguinte
+export PACMAN=/usr/bin/powerpill
+# essa variavel informa ao pacaur qual backend utilizar
+# adicione tambem o SigLevel a todos os repositorios padrao do Arch (core, extra, community, multilib)
+# para isso edite o pacman.conf
+sudo nano /etc/pacman.conf
+# ex:
+[core]
+SigLevel = PackageRequired
+Include = /etc/pacman.d/mirrorlist
+# ----- fim-opcional
+
+
 # sincronizar e instalar mixer da alsa
 pacman -Sy alsa-utils
 # ajuste o som, se desejar
@@ -300,22 +344,6 @@ xdg-user-dirs-update
 # nesse caso e "br abnt2" mesmo, sem hifen
 localectl set-x11-keymap br abnt2
 
-# adicionar AUR ao pacman
-sudo nano /etc/pacman.conf
-# adicione ao pacman.conf, proximo aos outros repositorios:
-# --------------------------------------
-[archlinuxfr]
-SigLevel = Never
-Server = http://repo.archlinux.fr/$arch
-# --------------------------------------
-
-# sincronize o pacman ao AUR e atualizar
-sudo pacman -Syyu --noconfirm
-
-# instalar yaourt
-sudo pacman -S yaourt
-
-
 # configure um DNS bom pelo network manager
 # existe uma limitacao de 3 nameservers no resolv.conf
 # e bom usar 2 para ipv4 e um ipv6
@@ -328,12 +356,7 @@ sudo mkdir -p /root/.gnupg
 sudo pacman-key --init
 sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys
 
-# o pacaur e como o yaourt, com mais inteligencia e facilidades. compartilham as mesmas funcoes e instalacoes
-# adicione a chave para cower, dependencia do pacaur
-# pena que ambos nao sao paralelos como o, ja depreciado, "bauer"
-gpg --recv-key 1EB2638FF56C0C53
-# instale o pacaur
-yaourt -S pacaur 
+
 
 
 # instale "suas coisas" com o pacaur
