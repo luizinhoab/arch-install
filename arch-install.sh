@@ -2,13 +2,13 @@
 # a instalação é iniciada como sudo automaticamente
 # siga os passos...
 
-# definir teclado abnt2 para live boot
+# DEFINIR TECLADO ABNT2 PARA LIVE BOOT
 loadkeys br-abnt2
 
-# aumenta fonte do terminal do live boot
+# AUMENTAR FONTE DO TERMINAL DO LIVE BOOT
 setfont lat4-19
 
-# altera língua para instalação 
+# ALTERA LINGUA DE INSTALACAO
 nano /etc/locale.gen
 # descomentar en_US UTF-8 e ISO
 # descomentar pt_BR UTF-8 e ISO
@@ -16,13 +16,13 @@ nano /etc/locale.gen
 locale-gen
 export LANG=pt_BR.UTF-8
 
-# testa conexão (wired) com a Internet
+# TESTA CONEXAO WIRED COM INTERNET
 ping -c 3 www.google.com
 
-# mostrar discos e partições
+# MOSTRAR DISCOS E PARTICOES
 fdisk -l
 
-# Instruções para formatação em disco GPT. Ver Arch Wiki para instruções sobre MBR.
+# INSTRUCOES PARA FORMATAR DISCO EM GPT. Ver Arch Wiki para instruções sobre MBR.
 # GPT requer particao de boot...
 # gerenciar particoes é bem fácil com cfdisk (outras opcoes na wiki do Arch)
 cfdisk /dev/sdx
@@ -43,6 +43,7 @@ cfdisk /dev/sdx
 mkfs.ext4 /dev/sdx3
 mkfs.ext4 /dev/sdx4
 
+# SWAP (opcional, recomendado)
 # formatar particao de swap e ligar
 mkswap /dev/sdx2
 swapon /dev/sdx2
@@ -57,11 +58,10 @@ mkdir /mnt/home
 mount /dev/sdx4 /mnt/home
 
 # ----------------- opcional
-# nao e obrigatorio 
-# mas recomendo otimizar os mirrors
-# e otimizar o DNS (utilizando o do Google)
+# OTIMIZAR MIRRORS E DNS (melhora muito tempo de instalacao de pacotes)
+# nao e obrigatorio mas recomendado
 nano /etc/resolv.conf
-# adicione "nameserver 8.8.8.8" antes de outros nameservers, sem aspas
+# para utilizar o DNS do Google adicione "nameserver 8.8.8.8" antes de outros nameservers, sem aspas
 # salve com ctrl+o, enter
 nano /etc/pacman.d/mirrorlist
 # ctrl+k para apagar mirrors que nao sejam brasileiros (sao mais ou menos 5 brasileiros)
@@ -75,21 +75,21 @@ rankmirrors mirrorlist
 cd ~
 # ------------------ fim-opcional
 
-# instalar o sistema base
+# INSTALAR SISTEMA BASE E BASE PARA FUNCOES ADICIONAIS
 pacstrap /mnt base base-devel
 
-# gerar o arquivo fstab (descritor de particoes)
+# GERAR O FSTAB (descritor de particoes)
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
 # verificar se fstab foi gerado conforme dados do "lsblk"
 # a particao de boot fica com path "none" mesmo
 cat /mnt/etc/fstab
 
-# logar na instalacao para definir inicializacao
+# LOGAR NA INSTALACAO PARA DEFINIR INICIALIZACAO
 arch-chroot /mnt
 
 # agora, dentro da instalacao...
-# alterar lingua novamente... observando um comando a mais
+# ALTERAR LINGUA DA INSTALACAO... observando um comando a mais
 nano /etc/locale.gen
 # descomentar en_US UTF-8 e ISO
 # descomentar pt_BR UTF-8 e ISO
@@ -99,12 +99,11 @@ locale-gen
 echo LANG=pt_BR.UTF-8 > /etc/locale.conf
 export LANG=pt_BR.UTF-8
 
-# ----- opcional
-# nao e obrigatorio 
-# mas recomendo otimizar os mirrors
-# e otimizar o DNS (utilizando o do Google)
+# ----------------- opcional
+# OTIMIZAR MIRRORS E DNS (melhora muito tempo de instalacao de pacotes)
+# nao e obrigatorio mas recomendado
 nano /etc/resolv.conf
-# adicione "nameserver 8.8.8.8" antes de outros nameservers, sem aspas
+# para utilizar o DNS do Google adicione "nameserver 8.8.8.8" antes de outros nameservers, sem aspas
 # salve com ctrl+o, enter
 nano /etc/pacman.d/mirrorlist
 # ctrl+k para apagar mirrors que nao sejam brasileiros (sao mais ou menos 5 brasileiros)
@@ -117,13 +116,14 @@ rankmirrors mirrorlist
 cd ~
 # ----- fim-opcional
 
-# definir configuracoes de teclado para persistir entre sessoes
+# DEFINIR CONFIGS DE TECLADO PARA PERSISTIR ENTRE SESSOES
 nano /etc/vconsole.conf
 # KEYMAP="br-abnt2.map.gz"
 # FONT=Lat2-Terminus16
 # FONT_MAP=
 # ctrl+o, enter, ctrl+x para salvar e sair do nano
 
+# DEFINIR HORA E FUSO
 # procurar fuso horario (existe fusos para o Brazil e Americas compativeis)
 ls /usr/share/zoneinfo
 # dou preferencia ao fuso de Sao Paulo
@@ -132,6 +132,7 @@ ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
 # sincronizar o relogio de hardware com o sistema
 hwclock --systohc --utc
 
+# CONFIGURAR REDE PARA USUARIOS
 # alguns tutoriais definem o servico de rede agora...
 # essa rede serve apenas para o live boot e não para a instalação final
 # eu prefiro usar o dhcpcd manualmente e depois instalar o NetworkManager
@@ -148,7 +149,7 @@ pacman -S wireless_tools wpa_supplicant wpa_actiond netcf dialog
 systemctl enable net-auto-wireless.service
 # ----- fim-opcional (rede para instalacao)
 
-# habilitar repositorio multi arquitetura (tipo o ia32 do Ubuntu)
+# HABILITAR REPOSITORIO MULTI ARQUITETURA (tipo o ia32 do Ubuntu)
 nano /etc/pacman.conf
 # descomente "[multilib]" e seus dados
 # descomente "Color" para ter cores
@@ -158,16 +159,17 @@ nano /etc/pacman.conf
 # sincronizar multilib
 pacman -Sy
 
-# criar senha de root (opcional, recomendado... nao esqueca essa senha)
+
+# CRIAR SENHA DO ROOT (opcional, recomendado... nao esqueca essa senha)
 passwd
 
-# criar usuario pessoal, substituindo "meulogin" pelo seu login desejado
+# CRIAR USUARIO PESSOAL, substituindo "meulogin" pelo seu login desejado
 useradd -m -g users -G wheel,storage,power -s /bin/bash meulogin
 
-# alterar senha do login pessoal, substituindo "meulogin" pelo seu login desejado
+# ALTERAR SENHA DO USUARIO PESSOAL, substituindo "meulogin" pelo seu login desejado
 passwd meulogin
 
-# instalar sudo
+# INSTALAR SUDO (MUITO IMPORTANTE)
 pacman -S sudo
 
 # editar as propriedades de sudo
@@ -177,6 +179,7 @@ EDITOR=nano visudo
 # instala o Intel microcode para processadores Intel
 pacman -S intel-ucode
 
+# INSTALAR GRUB BIOS
 # Existe a opção de instalar o GRUB BIOS ou UEFI.
 # Utilizaremos o GRUB BIOS. 
 # Ver Arch Wiki como instalar GRUB UEFI caso prefira/seja necessário para sua mobo...
@@ -205,12 +208,12 @@ umount /mnt
 reboot
 
 # o sistema devera bootar no terminal do arch ja instalado, sem gerenciador grafico
-# realize o login
+# REALIZE LOGIN NO SISTEMA OPERACIONAL INSTALADO
 
-# mude o hostname, substituindo meuhostname pelo nome desejado
+# ALTERE O HOSTNAME, substituindo meuhostname pelo nome desejado
 sudo hostnamectl set-hostname meuhostname
 
-# conectar o computador com a Internet (caso nao tenha habilitado o dhcpcd ou wpa anteriormente)
+# CONECTAR COM A INTERNET (caso nao tenha habilitado o dhcpcd ou wpa anteriormente)
 # pode ser necessario usar sudo para o dhcpcd
 dhcpcd
 # ele demora alguns segundos (5 seg em media)
@@ -270,6 +273,7 @@ alsamixer
 # se nenhum for escolhido agora, deverá ser escolhido ao instalar o xorg / ambiente grafico
 sudo pacman -S xf86-input-libinput 
 
+# INSTALAR DRIVER E TOOLS DA NVIDIA
 # em alguma parte do processo seguinte existe uma decisão sobre
 # lib libx264 ou libx264-10bit, sendo essa segunda de raro uso e dependente de arquitetura
 # (ver wiki, comentarios aqui: https://www.reddit.com/r/archlinux/comments/30khba/libx264_vs_libx26410bit/)
@@ -281,7 +285,7 @@ sudo pacman -S xf86-input-libinput
 #sudo pacman -S nvidia nvidia-libgl lib32-nvidia-libgl nvidia-settings
 sudo pacman -S nvidia-utils lib32-nvidia-utils nvidia-settings
 
-# instalar xorg e ferramentas basicas
+# INSTALAR XORG, FONTES E FERRAMENTAS BASICAS
 # force refaz alguns bindings por causa do driver NVIDIA
 sudo pacman -S --force xorg-server \
                        xorg-xinit \
@@ -324,7 +328,7 @@ sudo pacman -S --force gnome-shell \
                        gnome-characters \
                        gnome-logs\
 
-# ative o gdm
+# ATIVAR GDM (desktop manager)
 sudo systemctl enable gdm
 
 # reinicie
@@ -359,7 +363,7 @@ sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys
 
 
 
-# instale "suas coisas" com o pacaur
+# INSTALAR FERRAMENTAS COMUNS DE DESENVOLVIMENTO
 # ele ja verifica o que baixar pelo pacman ou AUR, dando preferencia ao pacman
 pacaur -S --noedit ttf-ms-fonts \
                    jdk \
@@ -390,14 +394,14 @@ pacaur -S --noedit ttf-ms-fonts \
                    slack-desktop \
                    libreoffice-fresh 
 
-# Docker
+# HABILITAR SERVICO DOCKER
 sudo systemctl enable docker
 sudo systemctl start docker
 # Docker sem sudo
 sudo gpasswd -a ${USER} docker
 newgrp docker
 
-# plex-media systemd
+# HABILITAR SERVICO PLEX MEDIA SERVER
 sudo systemctl enable plexmediaserver.service
 sudo systemctl start plexmediaserver.service
 
@@ -417,7 +421,7 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 # nao instale o pacote "preload", atrapalha mais do que ajuda em gaming PCs
 # -------------------------------------------------------------------------
 
-# Extensões Gnome 3
+# EXTENSOES E TEMAS GNOME 3
 # common Gnome extensions, status bar system usage monitor, tab change, audio device output changer 
 # use Gnome Tweak Tool to configure themes, cursors and extensions
 pacaur -S --noedit gnome-shell-extensions \
