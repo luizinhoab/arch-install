@@ -434,6 +434,9 @@ pacaur -S --noedit gnome-shell-extensions \
                    adapta-gtk-theme \
                    noto-fonts
 
+# Define nautilus como default handler de diretorios e
+# faz com que o "mostrar na pasta" do Chrome e outros apps funcione corretamente.
+xdg-mime default nautilus.desktop inode/directory
 
 # Permite que Google Chrome instale extensões do site Gnome
 pacaur -S --noedit chrome-gnome-shell-git
