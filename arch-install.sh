@@ -289,7 +289,6 @@ sudo pacman -S nvidia-utils lib32-nvidia-utils nvidia-settings
 # force refaz alguns bindings por causa do driver NVIDIA
 sudo pacman -S --force xorg-server \
                        xorg-xinit \
-                       xorg-server-utils \
                        mesa \
                        ttf-dejavu \
                        samba \
