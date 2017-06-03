@@ -1,61 +1,209 @@
-# O live ISO do Arch é um CLI
-# a instalação é iniciada como sudo automaticamente
-# siga os passos...
+echo '#################################################################'
+echo '#                                                               #'
+echo '#                                                               #'
+echo '#             Install Script Arch Linux 0.0.3a                  #'
+echo '#                                                               #'
+echo "#                                                               #"
+echo '#################################################################'
+echo
+echo
+echo 'Press Enter to continue or Ctrl + C to exit'
+read key
+clear
+echo $(date +%d-%m-%Y--%H:%M:%S)
+echo '##########################################'
+echo '#                                        #'
+echo '#              Pre Install               #'
+echo '#                                        #'
+echo '##########################################'
 
-# DEFINIR TECLADO ABNT2 PARA LIVE BOOT
-loadkeys br-abnt2
+while getopts "k:l:L:" opt; do
+  case $opt in
+    k) keyboard="$OPTARG"
+    echo $keyboard
+    ;;
+    l) language="$OPTARG"
+    echo $language
+    ;;
+    L) locale="$OPTARG"
+    echo $locale
+    ;;
+    \?) echo "Invalid parameter - $OPTARG" >&2
+    ;;
+  esac
+done
 
-# AUMENTAR FONTE DO TERMINAL DO LIVE BOOT
-setfont lat4-19
+keyboard="${keyboard:-br-abnt2}"
+language="${language:-en_US.UTF-8}"
+locale="${locale:-pt_BR.UTF-8}"
 
-# ALTERA LINGUA DE INSTALACAO
-nano /etc/locale.gen
-# descomentar en_US UTF-8 e ISO
-# descomentar pt_BR UTF-8 e ISO
-# ctrl+o, enter para salvar... ctrl+x para sair do nano
-locale-gen
-export LANG=pt_BR.UTF-8
+echo "Setup keyboard layout to $keyboard"
+loadkeys $keyboard
 
-# TESTA CONEXAO WIRED COM INTERNET
-ping -c 3 www.google.com
+echo "Setting installation locale to $locale"
+count=$(fgrep -o $locale /etc/locale.gen | wc -l)
 
-# MOSTRAR DISCOS E PARTICOES
+if [[ $count -eq 1 ]]; then
+
+  #comment all uncommented lines
+  sed -i '/^#/!s/^/#/g' /etc/locale.gen
+
+  #uncomment choice locale
+  sed -i "/^$locale/s/^#//g" /etc/locale.gen
+
+  echo 'Generating locale files'
+  locale-gen
+
+else
+  locale="pt_BR.UTF-8"
+  echo "Locale not found. Default locale config will be used - $locale"
+
+fi
+
+echo "Setting language, $language, for current session"
+export LANG=$language
+
+echo '########################'
+echo '#     Pre Install      #'
+echo '#   Internet Setup     #'
+echo '########################'
+echo
+echo
+echo 'The installation image enable the daemon dhcpd on wired devices initialization'
+
+read -p "Is your network connection wired ? (Y or N)" yn
+case $yn in
+    [Yy]* ) echo 'Wired Connection';;
+    [Nn]* )
+      echo 'Verify whats your wireless interface'
+      iwconfig
+      read -p "Whats your wireless interface ?" interface
+      echo $interface
+      if [[ ! -z $interface ]]; then
+        echo 'Setup your internet access.'
+        wifi-menu $interface
+      fi
+    ;;
+    * ) echo "Please answer Y for yes or N for no.";;
+esac
+
+echo 'Testing internet connection'
+ping -c 3 8.8.8.8
+
+if [[ $? -eq 1 ]]; then
+  echo 'Internet connection not reached.'
+  exit
+else
+  echo 'Internet connection reached.'
+fi
+
+echo
+echo
+
+
+echo
+echo
+echo '########################'
+echo '#     Pre Install      #'
+echo '#   Disk Management    #'
+echo '########################'
+echo
+echo
+
+echo 'This setup is based on GPT and EFI Systems'
+echo 'Listing partitions'
 fdisk -l
+echo
+while [[ true ]]; do
 
-# INSTRUCOES PARA FORMATAR DISCO EM GPT. Ver Arch Wiki para instruções sobre MBR.
-# GPT requer particao de boot...
-# gerenciar particoes é bem fácil com cfdisk (outras opcoes na wiki do Arch)
-cfdisk /dev/sdx
-# criar partição de boot com no mínimo 2M, tipo BIOS LINUX / BOOT
-# criar partição para swap (tipo "Linux swap") ideal do mesmo tamanho da RAM (ex: 8GB)
-# criar outras partições conforme desejo de uso (Linux filesystem, ext4)
-# executar write
+  echo 'If you need to create partitions,follow the next step with cfdisk'
+  read -p 'Type your disk path to partitionate(/dev/sdx) or type "skip": ' disk
+  diskCount=$(parted -l | grep $disk | wc -l)
 
-# exemplo de particionamento:
-# /dev/sdx
-# L /dev/sdx1 2M   bios boot
-# L /dev/sdx2 8G   linux swap
-# L /dev/sdx3 64G  linux filesystem (a formatar como ext4 para o "/")
-# L /dev/sdx4 390G linux filesystem (a formatar como ext4 para a "/home")
+  if [[ $disk == skip ]]; then
+    break
+  fi
 
-# formatar particoes "Linux filesystem" (numeros ficticios, execute fdisk para rever os seus)
-# nao formate a particao de boot para ext4 ou outra, o GRUB cuida disso
-mkfs.ext4 /dev/sdx3
-mkfs.ext4 /dev/sdx4
+  if [[ $diskCount -ge 1 ]]; then
+    echo 'Partitioning example'
+    echo
+    echo '# /dev/sdx'
+    echo 'Partition Size Type'
+    echo '/dev/sdx1 2M   EFI Systems'
+    echo '/dev/sdx2 8G   linux swap'
+    echo '/dev/sdx3 64G  linux filesystem (ext4 for the root"/")'
+    echo '/dev/sdx4 390G linux filesystem (ext4 for the "/home")'
 
-# SWAP (opcional, recomendado)
-# formatar particao de swap e ligar
-mkswap /dev/sdx2
-swapon /dev/sdx2
+    cfdisk $disc
+    break
+  else
+    echo 'Unknown disk. Please re-type.'
+  fi
+done
 
-# ver o layout do particionamento
-lsblk /dev/sdx
+while [[ true ]]; do
+  read -p 'Type the boot EFI partition(/dev/sdx1): ' boot
+  checkBoot=$(fdisk -l | grep $boot |wc -l)
+  if [[ $checkBoot -ge 1 ]]; then
+    mkfs.fat -F32 $boot
+    break
+  else
+    echo 'Unknown partition. Please re-type.'
+  fi
+done
 
-# montar particoes
-mount /dev/sdx3 /mnt
-# criar pasta home e montar particao
-mkdir /mnt/home
-mount /dev/sdx4 /mnt/home
+
+while [[ true ]]; do
+  read -p 'Type the swap partition (/dev/sdx2) or type "skip" - Optional: ' swap
+  checkSwap=$(fdisk -l | grep $swap |wc -l)
+
+  if [[ $swap == skip ]]; then
+    break
+  fi
+
+  if [[ $checkSwap  -ge 1 ]]; then
+    mkswap $swap
+    swapon $swap
+    break
+  else
+    echo 'Unknown partition. Please re-type.'
+  fi
+done
+echo
+echo
+echo 'Particioning layout'
+echo
+lsblk $disc
+
+while [[ true ]]; do
+  read -p 'Type de root partition(/dev/sdx3): ' root
+  checkRoot=$(fdisk -l | grep $root |wc -l)
+
+  if [[ checkRoot -ge 1 ]]; then
+    mkfs.ext4 $root
+    mount $root /mnt
+    break
+  else
+    echo 'Unknown partition. Please re-type.'
+  fi
+done
+
+while [[ true ]]; do
+  read -p 'Type de home partition(/dev/sdx4) or type "skip"  - Optional: ' home
+  checkHome=$(fdisk -l | grep $home |wc -l)
+  if [[ $home == skip ]]; then
+    break
+  fi
+
+  if [[ $checkHome -ge 1 ]]; then
+    mkfs.ext4 $home
+    mkdir /mnt/home
+    mount $home /mnt/home
+    break
+   else
+    echo 'Unknown partition. Please re-type.'
+   fi
+done
 
 # ----------------- opcional
 # OTIMIZAR MIRRORS E DNS (melhora muito tempo de instalacao de pacotes)
@@ -98,23 +246,6 @@ locale-gen
 # criar arquivo de configuracao de lingua
 echo LANG=pt_BR.UTF-8 > /etc/locale.conf
 export LANG=pt_BR.UTF-8
-
-# ----------------- opcional
-# OTIMIZAR MIRRORS E DNS (melhora muito tempo de instalacao de pacotes)
-# nao e obrigatorio mas recomendado
-nano /etc/resolv.conf
-# para utilizar o DNS do Google adicione "nameserver 8.8.8.8" antes de outros nameservers, sem aspas
-# salve com ctrl+o, enter
-nano /etc/pacman.d/mirrorlist
-# ctrl+k para apagar mirrors que nao sejam brasileiros (sao mais ou menos 5 brasileiros)
-# ctrl+o, enter para salvar
-# saia do nano e caminhe para a pasta de mirrors
-cd /etc/pacman.d/
-# rankeie os mirrors brasileiors (quanto mais mirrors, mais lento)
-rankmirrors mirrorlist
-# caminhe de volta para a home (alias "~")
-cd ~
-# ----- fim-opcional
 
 # DEFINIR CONFIGS DE TECLADO PARA PERSISTIR ENTRE SESSOES
 nano /etc/vconsole.conf
