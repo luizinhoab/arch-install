@@ -1,7 +1,7 @@
 echo '#################################################################'
 echo '#                                                               #'
 echo '#                                                               #'
-echo '#             Install Script Arch Linux 0.0.1a                    #'
+echo '#             Install Script Arch Linux 0.0.2a                    #'
 echo '#                                                               #'
 echo "#                                                               #"
 echo '#################################################################'
@@ -62,6 +62,43 @@ fi
 
 echo "Setting language, $language, for current session"
 export LANG=$language
+
+echo '########################'
+echo '#     Pre Install      #'
+echo '#   Internet Setup     #'
+echo '########################'
+echo
+echo
+echo 'The installation image enable the daemon dhcpd on wired devices initialization'
+
+read -p "Is your network connection wired ? (Y or N)" yn
+case $yn in
+    [Yy]* ) echo 'Wired Connection';;
+    [Nn]* )
+      echo 'Verify whats your wireless interface'
+      iwconfig
+      read -p "Whats your wireless interface ?" interface
+      echo $interface
+      if [[ ! -z $interface ]]; then
+        echo 'Setup your internet access.'
+        wifi-menu $interface
+      fi
+    ;;
+    * ) echo "Please answer Y for yes or N for no.";;
+esac
+
+echo 'Testing internet connection'
+ping -c 3 8.8.8.8
+
+if [[ $? -eq 1 ]]; then
+  echo 'Internet connection not reached.'
+  exit
+else
+  echo 'Internet connection reached.'
+fi
+
+echo
+echo
 
 
 # MOSTRAR DISCOS E PARTICOES
