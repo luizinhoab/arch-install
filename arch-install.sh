@@ -1,23 +1,68 @@
-# O live ISO do Arch é um CLI
-# a instalação é iniciada como sudo automaticamente
-# siga os passos...
+echo '#################################################################'
+echo '#                                                               #'
+echo '#                                                               #'
+echo '#             Install Script Arch Linux 0.0.1a                    #'
+echo '#                                                               #'
+echo "#                                                               #"
+echo '#################################################################'
+echo
+echo
+echo 'Press Enter to continue or Ctrl + C to exit'
+read key
+clear
+echo $(date +%d-%m-%Y--%H:%M:%S)
+echo '##########################################'
+echo '#                                        #'
+echo '#              Pre Install               #'
+echo '#                                        #'
+echo '##########################################'
 
-# DEFINIR TECLADO ABNT2 PARA LIVE BOOT
-loadkeys br-abnt2
+while getopts "k:l:L:" opt; do
+  case $opt in
+    k) keyboard="$OPTARG"
+    echo $keyboard
+    ;;
+    l) language="$OPTARG"
+    echo $language
+    ;;
+    L) locale="$OPTARG"
+    echo $locale
+    ;;
+    \?) echo "Invalid parameter - $OPTARG" >&2
+    ;;
+  esac
+done
 
-# AUMENTAR FONTE DO TERMINAL DO LIVE BOOT
-setfont lat4-19
+keyboard="${keyboard:-br-abnt2}"
+language="${language:-en_US.UTF-8}"
+locale="${locale:-pt_BR.UTF-8}"
 
-# ALTERA LINGUA DE INSTALACAO
-nano /etc/locale.gen
-# descomentar en_US UTF-8 e ISO
-# descomentar pt_BR UTF-8 e ISO
-# ctrl+o, enter para salvar... ctrl+x para sair do nano
-locale-gen
-export LANG=pt_BR.UTF-8
+echo "Setup keyboard layout to $keyboard"
+loadkeys $keyboard
 
-# TESTA CONEXAO WIRED COM INTERNET
-ping -c 3 www.google.com
+echo "Setting installation locale to $locale"
+count=$(fgrep -o $locale /etc/locale.gen | wc -l)
+
+if [[ $count -eq 1 ]]; then
+
+  #comment all uncommented lines
+  sed -i '/^#/!s/^/#/g' /etc/locale.gen
+
+  #uncomment choice locale
+  sed -i "/^$locale/s/^#//g" /etc/locale.gen
+
+  echo 'Generating locale files'
+  locale-gen
+
+else
+  locale="pt_BR.UTF-8"
+  echo "Locale not found. Default locale config will be used - $locale"
+
+fi
+
+echo "Setting language, $language, for current session"
+export LANG=$language
+
 
 # MOSTRAR DISCOS E PARTICOES
 fdisk -l
