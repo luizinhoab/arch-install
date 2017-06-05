@@ -1,7 +1,7 @@
 echo '#################################################################'
 echo '#                                                               #'
 echo '#                                                               #'
-echo '#             Install Script Arch Linux 0.0.3a                  #'
+echo '#             Install Script Arch Linux 0.1.0a                  #'
 echo '#                                                               #'
 echo "#                                                               #"
 echo '#################################################################'
@@ -204,7 +204,6 @@ while [[ true ]]; do
     echo 'Unknown partition. Please re-type.'
    fi
 done
-
 # ----------------- opcional
 # OTIMIZAR MIRRORS E DNS (melhora muito tempo de instalacao de pacotes)
 # nao e obrigatorio mas recomendado
@@ -216,7 +215,7 @@ nano /etc/pacman.d/mirrorlist
 # ctrl+o, enter para salvar
 # saia do nano e caminhe para a pasta de mirrors
 cd /etc/pacman.d/
-# rankeie os mirrors brasileiros 
+# rankeie os mirrors brasileiros
 # (exclua mirrors de paises longinquos. Quanto mais mirrors, mais demora o ranking)
 rankmirrors mirrorlist
 # walk de volta para a home (alias "~")
@@ -312,7 +311,7 @@ pacman -S intel-ucode
 
 # INSTALAR GRUB BIOS
 # Existe a opção de instalar o GRUB BIOS ou UEFI.
-# Utilizaremos o GRUB BIOS. 
+# Utilizaremos o GRUB BIOS.
 # Ver Arch Wiki como instalar GRUB UEFI caso prefira/seja necessário para sua mobo...
 # baixar e instalar o GRUB BIOS
 pacman -S grub-bios
@@ -369,13 +368,13 @@ sudo pacman -Syyu --noconfirm
 sudo pacman -S yaourt
 
 # instalar o pacaur
-# o pacaur e como o yaourt, com mais inteligencias e facilidades. 
+# o pacaur e como o yaourt, com mais inteligencias e facilidades.
 # compartilham as mesmas funcoes, locks e instalacoes ja que sao baseados no pacman
 # adicione a chave para cower, dependencia do pacaur
 # pena que ambos nao sao paralelos como o, ja depreciado, "bauer"
 gpg --recv-key 1EB2638FF56C0C53
 # instale o pacaur
-yaourt -S pacaur 
+yaourt -S pacaur
 
 
 # ----- opcional
@@ -402,7 +401,7 @@ alsamixer
 
 # xf86-input-libinput é o default, mas existem inputs para synaptics, evdev and wacom (ver Arch Wiki)
 # se nenhum for escolhido agora, deverá ser escolhido ao instalar o xorg / ambiente grafico
-sudo pacman -S xf86-input-libinput 
+sudo pacman -S xf86-input-libinput
 
 # INSTALAR DRIVER E TOOLS DA NVIDIA
 # em alguma parte do processo seguinte existe uma decisão sobre
@@ -411,7 +410,7 @@ sudo pacman -S xf86-input-libinput
 
 # verifique a wiki e instale driver de video adequado à sua GPU
 # no meu caso e a nvidia
-# lembrando que e bom instalar os drivers de video antes do XOrg e Gnome para evitar 
+# lembrando que e bom instalar os drivers de video antes do XOrg e Gnome para evitar
 # bindings ruins com mesa ou nouveau
 #sudo pacman -S nvidia nvidia-libgl lib32-nvidia-libgl nvidia-settings
 sudo pacman -S nvidia-utils lib32-nvidia-utils nvidia-settings
@@ -428,7 +427,7 @@ sudo pacman -S --force xorg-server \
                        gvfs-smb \
                        sshfs
 
-# instalar network manager caso nao esteja utilizando dhcpcd ou wpa como servico (como citado no passo opcional de redes) 
+# instalar network manager caso nao esteja utilizando dhcpcd ou wpa como servico (como citado no passo opcional de redes)
 # network manager e compativel com Gnome 3 (applet adiciona controles)
 sudo pacman -S networkmanager networkmanager-vpnc networkmanager-pptp networkmanager-openconnect network-manager-applet
 # habilite o network manager, caso tenha instalado
@@ -481,7 +480,7 @@ localectl set-x11-keymap br abnt2
 # configure um DNS bom pelo network manager
 # existe uma limitacao de 3 nameservers no resolv.conf
 # e bom usar 2 para ipv4 e um ipv6
-# - gigadns: 189.38.95.95 / 2804:10:10::10 
+# - gigadns: 189.38.95.95 / 2804:10:10::10
 # - google DNS: 8.8.8.8 / 2001:4860:4860::8888
 # sem isso o gnupg nao consegue achar keyservers em ISPs ruins
 
@@ -522,7 +521,7 @@ pacaur -S --noedit ttf-ms-fonts \
                    spotify \
                    empathy \
                    slack-desktop \
-                   libreoffice-fresh 
+                   libreoffice-fresh
 
 # HABILITAR SERVICO DOCKER
 sudo systemctl enable docker
@@ -536,11 +535,11 @@ sudo systemctl enable plexmediaserver.service
 sudo systemctl start plexmediaserver.service
 
 # (opcional) para evitar checks de seguranca e fazer o acesso ao HD mais rapido
-# edite o fstab e substitua "relatime" por "noatime" 
+# edite o fstab e substitua "relatime" por "noatime"
 # (ref: https://wiki.archlinux.org/index.php/fstab#atime_options)
 sudo nano /etc/fstab
 
-# INFINALITY IS NOT REQUIRED ANYMORE. FREETYPE 2.7+ HAS HINTING 
+# INFINALITY IS NOT REQUIRED ANYMORE. FREETYPE 2.7+ HAS HINTING
 # (https://github.com/bohoomil/fontconfig-ultimate/issues/171)
 
 # desativa windows key da esquerda, mudando para a direita ou nenhuma
@@ -552,12 +551,12 @@ gsettings set org.gnome.mutter overlay-key "Super_R"
 # -------------------------------------------------------------------------
 
 # EXTENSOES E TEMAS GNOME 3
-# common Gnome extensions, status bar system usage monitor, tab change, audio device output changer 
+# common Gnome extensions, status bar system usage monitor, tab change, audio device output changer
 # use Gnome Tweak Tool to configure themes, cursors and extensions
 pacaur -S --noedit gnome-shell-extensions \
                    gnome-shell-system-monitor-applet-git \
                    gnome-shell-extension-coverflow-alt-tab-git \
-                   gnome-shell-extension-audio-output-switcher-git \ 
+                   gnome-shell-extension-audio-output-switcher-git \
                    gtk-theme-arc-git \
                    arc-icon-theme \
                    elementary-icon-theme \
