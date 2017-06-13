@@ -297,14 +297,14 @@ echo
 echo 'Installing base packages.'
 pacstrap /mnt base base-devel
 
-# GERAR O FSTAB (descritor de particoes)
+echo
+echo 'Generating partition descriptor'
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
-# verificar se fstab foi gerado conforme dados do "lsblk"
-# a particao de boot fica com path "none" mesmo
+echo 'Generated partition descriptor'
 cat /mnt/etc/fstab
 
-# LOGAR NA INSTALACAO PARA DEFINIR INICIALIZACAO
+echo 'Changing root directory'
 arch-chroot /mnt
 
 # agora, dentro da instalacao...
