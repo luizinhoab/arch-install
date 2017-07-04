@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 echo '#################################################################'
 echo '#                                                               #'
 echo '#                                                               #'
@@ -274,9 +273,9 @@ while [[ true ]]; do
       echo 'Country has benn already added.'
     fi
 
-    read -p 'Press Enter to add new country for mirror, or type "skip" to exit.' op
+    read -p 'Press Enter to add new country for mirror, or type "Quit" to exit.' op
 
-    if [[ $op == 'skip' ]]; then
+    if [[ $op == 'Quit' ]]; then
       break
     fi
 
