@@ -1,7 +1,7 @@
 echo '#################################################################'
 echo '#                                                               #'
 echo '#                                                               #'
-echo '#             Setup Script Arch Linux 0.0.1a                    #'
+echo '#                 Setup Script Arch Linux                       #'
 echo '#                                                               #'
 echo "#                                                               #"
 echo '#################################################################'
@@ -159,7 +159,7 @@ echo 'Server = http://repo.archlinux.fr/$arch' >> /etc/pacman.conf
 sudo pacman -Syyu --noconfirm
 sudo pacman -S yaourt
 
-
+read
 echo
 echo
 echo '########################'
@@ -172,10 +172,15 @@ echo
 echo 'Installing Git'
 pacman -S --noconfirm git
 echo
-read -p 'Do you wanna install and use ZSH ? (Y/N) ' shYn
+read -p 'Do you wanna use ZSH ? (Y/N) ' shYn
 if [[ $shYn == "Y" ]]; then
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  echo 'Installing ZSH ...'
+  pacman -S zsh	zsh-completions
+
+  echo 'Setup oh-my-zsh ...'
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sed 's/env zsh//g')"
   shellPath='/bin/zsh'
+
 else
   shellPath = '/bin/bash'
 fi
@@ -194,21 +199,21 @@ while [[ true ]]; do
   useradd -m -G wheel -s $shellPath $admin
   passwd $admin
 
-  gpasswd -a $admin locate
-  gpasswd -a $admin users
-  gpasswd -a $admin audio
-  gpasswd -a $admin video
-  gpasswd -a $admin daemon
-  gpasswd -a $admin dbus
-  gpasswd -a $admin disk
-  gpasswd -a $admin games
-  gpasswd -a $admin rfkill
-  gpasswd -a $admin lp
-  gpasswd -a $admin network
-  gpasswd -a $admin optical
-  gpasswd -a $admin power
-  gpasswd -a $admin scanner
-  gpasswd -a $admin storage
+  #gpasswd -a $admin locate
+  #gpasswd -a $admin users
+  #gpasswd -a $admin audio
+  #gpasswd -a $admin video
+  #gpasswd -a $admin daemon
+  #gpasswd -a $admin dbus
+  #gpasswd -a $admin disk
+  #gpasswd -a $admin games
+  #gpasswd -a $admin rfkill
+  #gpasswd -a $admin lp
+  #gpasswd -a $admin network
+  #gpasswd -a $admin optical
+  #gpasswd -a $admin power
+  #gpasswd -a $admin scanner
+  #gpasswd -a $admin storage
 
 done
 
@@ -218,7 +223,96 @@ while [[ true ]]; do
     break
   fi
 
-  useradd -m -G users -s $shellPath $user
+  useradd -m -g users -G audio -s $shellPath $user
   passwd $user
 
 done
+
+echo 'Listing processors ...'
+grep --color "model name" /proc/cpuinfo
+echo
+echo
+echo 'If you have a intel processor, generally is need intall the intel microcode.'
+read -p 'Do you wanna install intel microcode ?(Y/N)' ynMicro
+
+if [[ $ynMicro == 'Y' ]]; then
+  pacman -S intel-ucode
+fi
+
+module = 'ext4'
+
+while [[ true ]]; do
+  read -p 'Select your video graphic card(intel, intel/nvidia, nvidia, amd): ' video
+  case $video in
+    intel ) pacman -S  mesa lib32-mesa xf86-video-intel vulkan-intel
+            pacman -S mesa-libgl
+            pacman -S libva-intel-driver libva
+            export LIBVA_DRIVER_NAME="i965"
+            module+=" intel_agp i915"
+            break
+      ;;
+    intel/nvidia )
+            pacman -S intel-dri xf86-video-intel bumblebee nvidia
+            pacman -S bbswitch
+            pacman -S lib32-nvidia-utils
+            pacman -S lib32-intel-dri
+            pacman -S opencl-nvidia
+            pacman -S lib32-virtualgl
+            gpasswd -a $admin bumblebee
+            systemctl status bumblebeed
+            systemctl enable bumblebeed
+            systemctl start bumblebeed
+
+            glxspheres64
+            optirun glxspheres64
+
+            module+=" nouveau"
+
+    echo
+      ;;
+    nvidia ) sudo pacman -S nvidia nvidia-utils lib32-nvidia-utils nvidia-settings
+             export LIBVA_DRIVER_NAME="nvidia"
+             module+=" nouveau"
+             break
+      ;;
+    amd ) "Video configuration for $video, should be accomplished after installation."
+          module+=" radeon/amdgpu"
+          break
+      ;;
+  esac
+done
+echo 'Setting video modules for initramfs'
+sed -i "/MODULES=\"\"/ s/MODULES=\"$modules\"/" /etc/mkinitcpio.conf
+
+echo 'Installing audio drivers and libs'
+pacman -S alsa-driver alsa-utils alsa-lib alsa-plugins
+echo
+echo
+
+echo 'Installing system monitor battery.'
+pacman -S acpi acpid
+echo 'Enabling and starting service.'
+systemctl enable acpid.service
+
+echo 'Installing X Window System'
+pacman -S xorg xorg-server-utils xorg-apps xorg-xinit
+
+echo 'Installing mouse, keyboard and touchpad managers.'
+pacman -S xf86-input-libinput xf86-input-synaptics xf86-input-mouse xf86-input-keyboard
+
+echo 'Regenerate initramfs image after graphic card configuration.'
+mkinitcpio -p linux
+
+read -p 'Do you wanna configure bootloader GRUB ?(Y/N)' ynGRUB
+
+if [[ $ynGRUB == 'Y' ]]; then
+  echo 'Installing os prober to check disks, if exists another OS.'
+  pacman -S os-prober
+
+  echo 'Installing GRUB boot loader.'
+  pacman -S grub
+  grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch --recheck
+  grub-mkconfig -o /boot/grub/grub.cfg
+fi
+
+echo 'Rebooting system.'

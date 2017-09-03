@@ -1,7 +1,8 @@
+#!/usr/bin/env bash
 echo '#################################################################'
 echo '#                                                               #'
 echo '#                                                               #'
-echo '#             Install Script Arch Linux 0.1.4a                  #'
+echo '#                  Install Script Arch Linux                    #'
 echo '#                                                               #'
 echo "#                                                               #"
 echo '#################################################################'
@@ -129,10 +130,10 @@ while [[ true ]]; do
     echo
     echo '# /dev/sdx'
     echo 'Partition Size Type'
-    echo '/dev/sdx1 2M   EFI Systems'
-    echo '/dev/sdx2 8G   linux swap'
-    echo '/dev/sdx3 64G  linux filesystem (ext4 for the root"/")'
-    echo '/dev/sdx4 390G linux filesystem (ext4 for the "/home")'
+    echo '/dev/sdx1 512MiB   EFI Systems'
+    echo '/dev/sdx2 8GiB   linux swap'
+    echo '/dev/sdx3 64GiB  linux filesystem (ext4 for the root"/")'
+    echo '/dev/sdx4 390GiB linux filesystem (ext4 for the "/home")'
 
     cfdisk $disc
     break
@@ -146,6 +147,7 @@ while [[ true ]]; do
   checkBoot=$(fdisk -l | grep $boot |wc -l)
   if [[ $checkBoot -ge 1 ]]; then
     mkfs.fat -F32 $boot
+    mount $boot /mnt/boot/efi
     break
   else
     echo 'Unknown partition. Please re-type.'
@@ -181,7 +183,8 @@ while [[ true ]]; do
 
   if [[ checkRoot -ge 1 ]]; then
     mkfs.ext4 $root
-    mount $root /mnt
+    mkdir -p /mnt/boot/efi
+    mount $root /mnt/boot/efi
     break
   else
     echo 'Unknown partition. Please re-type.'
@@ -273,9 +276,9 @@ while [[ true ]]; do
       echo 'Country has benn already added.'
     fi
 
-    read -p 'Press Enter to add new country for mirror, or type "Quit" to exit.' op
+    read -p 'Press Enter to add new country for mirror, or type "skip" to exit.' op
 
-    if [[ $op == 'Quit' ]]; then
+    if [[ $op == 'skip' ]]; then
       break
     fi
 
@@ -305,6 +308,6 @@ cat /mnt/etc/fstab
 
 echo 'Changing root directory and initalizing the system setup.'
 
-chmod 777 arch-setup
-cp arch-setup.sh /mnt/tmp/arch-setup.sh
-arch-chroot /mnt /bin/bash -c "chmod 777 /tmp/arch-setup.sh; ./tmp/arch-setup.sh -k $keyboard -l $locale -L $language"
+chmod 777 arch-setup.sh
+cp arch-setup.sh /mnt/arch-setup.sh
+arch-chroot /mnt /bin/bash -c "chmod 777 arch-setup.sh; ./arch-setup.sh -k $keyboard -l $locale -L $language"
