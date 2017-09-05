@@ -315,4 +315,26 @@ if [[ $ynGRUB == 'Y' ]]; then
   grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
+while [[ true ]]; do
+  read -p "Select which desktop enviroment you want install or type 'skip': \n
+           GNOME \n
+           XFCE \n
+           KDE \n" deskEnv
+  case $deskEnv in
+    GNOME )
+      pacman -S --force gnome gnome-extra
+      ;;
+    XFCE )
+      pacman -S --force xfce4 xfce4-goodies
+      ;;
+    KDE )
+      ;
+  esac
+
+  read -p "Select which login manager you want install or type 'skip': \n
+           LightDM \n
+           GDM\n
+           SDDM \n" deskEnv
+done
+
 echo 'Rebooting system.'

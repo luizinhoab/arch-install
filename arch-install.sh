@@ -147,7 +147,6 @@ while [[ true ]]; do
   checkBoot=$(fdisk -l | grep $boot |wc -l)
   if [[ $checkBoot -ge 1 ]]; then
     mkfs.fat -F32 $boot
-    mount $boot /mnt/boot/efi
     break
   else
     echo 'Unknown partition. Please re-type.'
@@ -182,9 +181,10 @@ while [[ true ]]; do
   checkRoot=$(fdisk -l | grep $root |wc -l)
 
   if [[ checkRoot -ge 1 ]]; then
+
     mkfs.ext4 $root
-    mkdir -p /mnt/boot/efi
-    mount $root /mnt/boot/efi
+    mkdir /mnt/home
+    mount $home /mnt/home
     break
   else
     echo 'Unknown partition. Please re-type.'
