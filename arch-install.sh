@@ -183,8 +183,7 @@ while [[ true ]]; do
   if [[ checkRoot -ge 1 ]]; then
 
     mkfs.ext4 $root
-    mkdir /mnt/home
-    mount $home /mnt/home
+    mount $root /mnt
     break
   else
     echo 'Unknown partition. Please re-type.'
@@ -192,7 +191,7 @@ while [[ true ]]; do
 done
 
 while [[ true ]]; do
-  read -p 'Type de home partition(/dev/sdx4) or type "skip"  - Optional: ' home
+  read -p 'Type the home partition(/dev/sdx4) or type "skip"  - Optional: ' home
   checkHome=$(fdisk -l | grep $home |wc -l)
   if [[ $home == skip ]]; then
     break
@@ -310,4 +309,4 @@ echo 'Changing root directory and initalizing the system setup.'
 
 chmod 777 arch-setup.sh
 cp arch-setup.sh /mnt/arch-setup.sh
-arch-chroot /mnt /bin/bash -c "chmod 777 arch-setup.sh; ./arch-setup.sh -k $keyboard -l $locale -L $language"
+arch-chroot /mnt /bin/bash -c "chmod 777 arch-setup.sh; ./arch-setup.sh -k $keyboard -l $locale -L $language -b $boot"

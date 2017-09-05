@@ -16,14 +16,16 @@ echo
 while getopts "k:l:L:" opt; do
   case $opt in
     k) keyboard="$OPTARG"
-    echo $keyboard
+    echo "Keyboard -- $keyboard"
     ;;
     l) language="$OPTARG"
-    echo $language
+    echo "Language -- $language"
     ;;
     L) locale="$OPTARG"
-    echo $locale
+    echo "Locale -- $locale"
     ;;
+    b) boot="$OPTARG"
+    echo "Boot Partition -- $boot"
     \?) echo "Invalid parameter - $OPTARG" >&2
     ;;
   esac
@@ -309,6 +311,10 @@ if [[ $ynGRUB == 'Y' ]]; then
   echo 'Installing os prober to check disks, if exists another OS.'
   pacman -S os-prober
 
+  echo 'Configuring boot partition.'
+  mkdir -p /boot/efi
+  mount $boot /boot/efi
+
   echo 'Installing GRUB boot loader.'
   pacman -S grub
   grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch --recheck
@@ -319,7 +325,8 @@ while [[ true ]]; do
   read -p "Select which desktop enviroment you want install or type 'skip': \n
            GNOME \n
            XFCE \n
-           KDE \n" deskEnv
+           KDE \n
+           LXDE" deskEnv
   case $deskEnv in
     GNOME )
       pacman -S --force gnome gnome-extra
@@ -328,7 +335,9 @@ while [[ true ]]; do
       pacman -S --force xfce4 xfce4-goodies
       ;;
     KDE )
-      ;
+      ;;
+    LXDE )
+      ;;
   esac
 
   read -p "Select which login manager you want install or type 'skip': \n
