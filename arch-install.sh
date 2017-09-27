@@ -146,6 +146,7 @@ while [[ true ]]; do
   read -p 'Type the boot EFI partition(/dev/sdx1): ' boot
   checkBoot=$(fdisk -l | grep $boot |wc -l)
   if [[ $checkBoot -ge 1 ]]; then
+    echo 'Formatting boot partition.'
     mkfs.fat -F32 $boot
     break
   else
@@ -163,6 +164,7 @@ while [[ true ]]; do
   fi
 
   if [[ $checkSwap  -ge 1 ]]; then
+    echo 'Creating and activating boot partition.'
     mkswap $swap
     swapon $swap
     break
@@ -172,7 +174,7 @@ while [[ true ]]; do
 done
 echo
 echo
-echo 'Particioning layout'
+echo 'Partitioning layout'
 echo
 lsblk $disc
 
@@ -181,8 +183,9 @@ while [[ true ]]; do
   checkRoot=$(fdisk -l | grep $root |wc -l)
 
   if [[ checkRoot -ge 1 ]]; then
-
+    echo 'Ext4 formating of root partitionon.'
     mkfs.ext4 $root
+    echo 'Mount root partition.'
     mount $root /mnt
     break
   else
@@ -294,9 +297,15 @@ sed -i -e 's/#.*$//' -e '/^$/d' /etc/pacman.d/mirrorlist
 echo 'Ranking mirrors'
 rankmirrors /etc/pacman.d/mirrorlist
 
+echo 'Populating and updating Arch GPG keys'
+pacman -Sy --noconfirm archlinux-keyring
+pacman-key --init
+pacman-key --populate archlinux
+pacman-key --refresh-keys
+
 echo
 echo 'Installing initial packages.'
-pacstrap /mnt base base-devel wireless_tools wpa_supplicant wpa_actiond netcf dialog
+pacstrap -i /mnt base base-devel wireless_tools wpa_supplicant wpa_actiond netcf dialog
 
 echo
 echo 'Generating partition descriptor'
@@ -308,5 +317,11 @@ cat /mnt/etc/fstab
 echo 'Changing root directory and initalizing the system setup.'
 
 chmod 777 arch-setup.sh
-cp arch-setup.sh /mnt/arch-setup.sh
-arch-chroot /mnt /bin/bash -c "chmod 777 arch-setup.sh; ./arch-setup.sh -k $keyboard -l $locale -L $language -b $boot"
+mkdir /mnt/temp
+cp arch-setup.sh /mnt/temp/arch-setup.sh
+arch-chroot /mnt /bin/bash -c "chmod 777 /temp/arch-setup.sh; ./temp/arch-setup.sh -k $keyboard -l $locale -L $language -b $boot -s $swap"
+
+echo 'Deleting installation temp files'
+rm -rf /mnt/temp
+read -p 'Rebooting system ..........'
+reboot
