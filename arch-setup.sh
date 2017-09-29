@@ -60,22 +60,27 @@ echo 'The next step will be choose the time zone.'
 
 while [[ true ]]; do
 
-  echo 'Need select a region and subregion.'
-  echo 'Below a list of regions:'
-  echo
-  ls -d -A1 /usr/share/zoneinfo/*/ | awk -F"/" '{print $5}'
-  read -p 'Type a region :' region
-  echo 'Below a list of subregions:'
-  ls -ds -A1 /usr/share/zoneinfo/$region/*/ | awk -F"/" '{print $6}'
-  read -p 'Type a subregion :' subregion
+  echo 'Select a time zone to adjust the clock.'
+  read -p 'Type a country, state or province to list related timezones, or 'skip' to GMT 0: ' localtime
 
-  cd /usr/share/zoneinfo/$region/$subregion
+  if [[ $localtime == "skip" ]]; then
+    timedatectl set-timezone UTC
+    break
+  fi
+
+  if [[ -n $localtime ]]; then
+    timedatectl list-timezones | grep $localtime
+  else
+    timedatectl list-timezones
+  fi
+
+  read -p 'Type timezone of previous list (America/Vancouver):' timeZone
+
+  timedatectl set-timezone $timeZone
 
   if [[ $? -eq 0 ]]; then
-    ln -sf /usr/share/zoneinfo/$region/$subregion /etc/localtime
+    echo "$timeZone selected."
     break
-  else
-    echo 'Invalid region or subregion.'
   fi
 
 done
