@@ -115,8 +115,9 @@ while [[ true ]]; do
   echo 'Below will be listed the network intefaces:'
   ip link
 
-  read -p 'Type wired interface name: ' wired
-  systemctl enable dhcpcd@$wired.service
+  #read -p 'Type wired interface name: ' wired
+  #systemctl enable dhcpcd@$wired.service
+  systemctl enable dhcpcd
   if [[ $? -eq 1 ]]; then
   echo 'An error ocurred while tried configure wired connection'
   fi
@@ -254,7 +255,7 @@ module='ext4'
 while [[ true ]]; do
   read -p 'Select your video graphic card(intel, intel/nvidia, nvidia, amd): ' video
   case $video in
-    intel ) pacman -S  --noconfirm mesa lib32-mesa xf86-video-intel vulkan-intel
+    intel ) pacman -S --noconfirm mesa lib32-mesa xf86-video-intel vulkan-intel
             pacman -S --noconfirm mesa-libgl
             pacman -S --noconfirm libva-intel-driver libva
             export LIBVA_DRIVER_NAME="i965"
@@ -304,7 +305,10 @@ echo 'Enabling and starting service.'
 systemctl enable acpid.service
 
 echo 'Installing X Window System'
-pacman -S --noconfirm xorg xorg-server-utils xorg-apps xorg-xinit
+pacman -S --noconfirm xorg xorg-server-utils xorg-apps xorg-xinit xdg-user-dirs
+
+echo 'Gnerate an update common directories'
+xdg-user-dirs-update
 
 echo 'Installing mouse, keyboard and touchpad managers.'
 pacman -S --noconfirm xf86-input-libinput xf86-input-synaptics xf86-input-mouse xf86-input-keyboard
@@ -353,7 +357,8 @@ while [[ true ]]; do
       echo 'Installing Gnome'
       echo 'The GDM login manager will be installed by default.'
       pacman -S --noconfirm --force gnome gnome-extra
-      sudo systemctl enable gdm
+      systemctl enable gdm.service
+      ln -svf /usr/lib/systemd/system/graphical.target /etc/systemd/system/default.target
       deskEnv='gnome-session'
       ;;
     XFCE )
@@ -374,7 +379,7 @@ while [[ true ]]; do
       fi
 
       echo 'The SDDM login manager will be installed by default.'
-      system_ctl enable sddm
+      system_ctl enable sddm.service
       sddm --example-config > /etc/sddm.conf
 
       deskEnv='startkde'
@@ -382,7 +387,8 @@ while [[ true ]]; do
     LXDE )
       echo 'Installing LXDE'
       echo 'The LXDM login manager will be installed by default.'
-      pacman -S --noconfirm --force lxde
+      pacman -S --noconfirm --force lxde lxde-common lxsession openbox
+      systemctl enable lxdm.service
       deskEnv='startlxde'
       ;;
   esac

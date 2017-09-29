@@ -130,7 +130,7 @@ while [[ true ]]; do
     echo
     echo '# /dev/sdx'
     echo 'Partition Size Type'
-    echo '/dev/sdx1 512MiB   EFI Systems'
+    echo '/dev/sdx1 512MiB EFI Systems'
     echo '/dev/sdx2 8GiB   linux swap'
     echo '/dev/sdx3 64GiB  linux filesystem (ext4 for the root"/")'
     echo '/dev/sdx4 390GiB linux filesystem (ext4 for the "/home")'
@@ -147,7 +147,7 @@ while [[ true ]]; do
   checkBoot=$(fdisk -l | grep $boot |wc -l)
   if [[ $checkBoot -ge 1 ]]; then
     echo 'Formatting boot partition.'
-    mkfs.fat -F32 $boot
+    mkfs.fat -F32 -n BOOT $boot
     break
   else
     echo 'Unknown partition. Please re-type.'
