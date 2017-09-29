@@ -257,35 +257,36 @@ addedCountries=()
 while [[ true ]]; do
 
   echo
-  read -p 'Type any country listed for mirror or "skip": ' mirrorCountry
+  read -p 'Type any country listed for mirror or "skip" to Brazil like default: ' mirrorCountry
 
   if [[ $mirrorCountry == skip ]]; then
-    break
-  fi
+    addedCountries+=('Brazil')
+  else
 
-  checkMirror=$(cat /etc/pacman.d/mirrorlist | grep $mirrorCountry | wc -l)
-  echo "-->$checkMirror"
-  if [[ checkMirror -ge 1 ]]; then
-    echo "$addedCountries[@]"
-    #uncoment mirror
-    if [[ ! " ${addedCountries[@]} " =~ " ${mirrorCountry} " ]]; then
+    checkMirror=$(cat /etc/pacman.d/mirrorlist | grep $mirrorCountry | wc -l)
+    echo "-->$checkMirror"
+    if [[ checkMirror -ge 1 ]]; then
+      echo "$addedCountries[@]"
+      #uncoment mirror
+      if [[ ! " ${addedCountries[@]} " =~ " ${mirrorCountry} " ]]; then
 
-      echo "$checkMirror mirror(s) from $mirrorCountry added."
-      sed -i "/$mirrorCountry/ {n; s/^#//}" /etc/pacman.d/mirrorlist
-      addedCountries+=($mirrorCountry)
+        echo "$checkMirror mirror(s) from $mirrorCountry added."
+        sed -i "/$mirrorCountry/ {n; s/^#//}" /etc/pacman.d/mirrorlist
+        addedCountries+=($mirrorCountry)
+
+      else
+        echo 'Country has benn already added.'
+      fi
+
+      read -p 'Press Enter to add new country for mirror, or type "skip" to exit.' op
+
+      if [[ $op == 'skip' ]]; then
+        break
+      fi
 
     else
-      echo 'Country has benn already added.'
+      echo 'Unknow country. Please re-type.'
     fi
-
-    read -p 'Press Enter to add new country for mirror, or type "skip" to exit.' op
-
-    if [[ $op == 'skip' ]]; then
-      break
-    fi
-
-  else
-    echo 'Unknow country. Please re-type.'
   fi
   echo 'Added mirrors: '
   printf '%s\n' "${addedCountries[@]}"
