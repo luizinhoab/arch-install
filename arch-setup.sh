@@ -189,12 +189,15 @@ else
   shellPath='/bin/bash'
 fi
 
-
-
-read -p 'Do You wanna a password for super-user ? This is strongly recommended.(Y/N) ' suYn
-if [[ $suYn == "Y" ]]; then
-  passwd
-fi
+while [[ true ]]; do
+  read -p 'Do You wanna a password for super-user ? This is strongly recommended.(Y/N) ' suYn
+  if [[ $suYn == "Y" ]]; then
+    passwd
+    if [[ $? -eq 0 ]]; then
+      break
+    fi
+  fi
+done
 
 while [[ true ]]; do
   read -p 'Add new ADMIN user. Type the username or "skip"' admin
