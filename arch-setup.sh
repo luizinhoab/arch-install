@@ -27,9 +27,6 @@ while getopts "k:l:L:b:" opt; do
     b) boot="$OPTARG"
     echo "Boot Partition -- $boot"
     ;;
-    s) swap="$OPTARG"
-    echo "Swap Partition -- $swap"
-    ;;
     \?) echo "Invalid parameter - $OPTARG" >&2
     ;;
   esac
@@ -397,9 +394,9 @@ while [[ true ]]; do
 done
 
 echo "Unmount partitions and finalize installation."
-umount /mnt/boot
+umount $boot
 umount /mnt
-swapoff $swap
+swapoff -a
 
 
 echo 'Instllation & Setup complete.'
