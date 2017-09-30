@@ -70,6 +70,9 @@ while [[ true ]]; do
 
   if [[ -n $localtime ]]; then
     timedatectl list-timezones | grep $localtime
+    if [[ $? -eq 1 ]]; then
+      timedatectl list-timezones
+    fi
   else
     timedatectl list-timezones
   fi
@@ -400,12 +403,6 @@ while [[ true ]]; do
   echo "exec $deskEnv" >> ~/.xinitrc
   break
 done
-
-echo "Unmount partitions and finalize installation."
-umount $boot
-umount /mnt
-swapoff -a
-
 
 echo 'Instllation & Setup complete.'
 read -p 'Rebooting your system.'

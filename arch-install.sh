@@ -143,6 +143,7 @@ while [[ true ]]; do
 done
 
 while [[ true ]]; do
+  mnt='/mnt'
   read -p 'Type the boot EFI partition(/dev/sdx1): ' boot
   checkBoot=$(fdisk -l | grep $boot |wc -l)
   if [[ $checkBoot -ge 1 ]]; then
@@ -186,7 +187,7 @@ while [[ true ]]; do
     echo 'Ext4 formating of root partitionon.'
     mkfs.ext4 $root
     echo 'Mount root partition.'
-    mount $root /mnt
+    mount $root $mnt
     break
   else
     echo 'Unknown partition. Please re-type.'
@@ -202,8 +203,8 @@ while [[ true ]]; do
 
   if [[ $checkHome -ge 1 ]]; then
     mkfs.ext4 $home
-    mkdir /mnt/home
-    mount $home /mnt/home
+    mkdir $mnt/home
+    mount $home $mnt/home
     break
    else
     echo 'Unknown partition. Please re-type.'
@@ -255,12 +256,14 @@ sed -i '/^#/!s/^/#/g' /etc/pacman.d/mirrorlist
 addedCountries=()
 
 while [[ true ]]; do
-
+  defaultMirror='Brazil'
   echo
   read -p 'Type any country listed for mirror or "skip" to Brazil like default: ' mirrorCountry
 
   if [[ $mirrorCountry == skip ]]; then
-    addedCountries+=('Brazil')
+    echo 'The default mirror was added to list mirror.'
+    sed -i "/$defaultMirror/ {n; s/^#//}" /etc/pacman.d/mirrorlist
+    break
   else
 
     checkMirror=$(cat /etc/pacman.d/mirrorlist | grep $mirrorCountry | wc -l)
@@ -306,23 +309,28 @@ pacman-key --refresh-keys
 
 echo
 echo 'Installing initial packages.'
-pacstrap -i /mnt base base-devel wireless_tools wpa_supplicant wpa_actiond netcf dialog
+pacstrap -i $mnt base base-devel wireless_tools wpa_supplicant wpa_actiond netcf dialog
 
 echo
 echo 'Generating partition descriptor'
-genfstab -U -p /mnt >> /mnt/etc/fstab
+genfstab -U -p $mnt >> $mnt/etc/fstab
 
 echo 'Generated partition descriptor'
-cat /mnt/etc/fstab
+cat $mnt/etc/fstab
 
 echo 'Changing root directory and initalizing the system setup.'
 
 chmod 777 arch-setup.sh
-mkdir /mnt/temp
-cp arch-setup.sh /mnt/temp/arch-setup.sh
-arch-chroot /mnt /bin/bash -c "chmod 777 /temp/arch-setup.sh; ./temp/arch-setup.sh -k $keyboard -l $locale -L $language -b $boot -s $swap"
+mkdir $mnt/temp
+cp arch-setup.sh $mnt/temp/arch-setup.sh
+arch-chroot $mnt /bin/bash -c "chmod 777 /temp/arch-setup.sh; ./temp/arch-setup.sh -k $keyboard -l $locale -L $language -b $boot -s $swap"
+
+echo "Unmount partitions and finalize installation."
+umount $boot
+umount $mnt
+swapoff -a
 
 echo 'Deleting installation temp files'
-rm -rf /mnt/temp
+rm -rf $mnt/temp
 read -p 'Rebooting system ..........'
 reboot
