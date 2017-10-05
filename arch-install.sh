@@ -64,6 +64,43 @@ fi
 echo "Setting language, $language, for current session"
 export LANG=$language
 
+
+while [[ true ]]; do
+
+  echo 'Select a time zone to adjust the clock.'
+  read -p 'Type a country, state or province to list related timezones, or "skip" to GMT 0: ' localtime
+
+  if [[ $localtime == "skip" ]]; then
+    timeZone="UTC"
+    break
+  fi
+
+  if [[ -n $localtime ]]; then
+    timedatectl list-timezones | grep $localtime
+    if [[ $? -eq 1 ]]; then
+      timedatectl list-timezones
+    fi
+  else
+    timedatectl list-timezones
+  fi
+
+  read -p 'Type timezone of previous list (America/Vancouver):' tZ
+
+  dirTZ="/usr/share/zoneinfo/$tZ"
+
+  ls $dirTZ
+
+  if [[ $? -eq 0 && -f "/usr/share/zoneinfo/$tZ" ]]; then
+    timeZone=$tZ
+    echo "The time zone $timeZone was selected"
+    break
+  else
+    echo "Invalid timezone, $timeZone."
+  fi
+
+
+done
+
 echo '########################'
 echo '#     Pre Install      #'
 echo '#   Internet Setup     #'
@@ -80,7 +117,7 @@ case $yn in
       iwconfig
       read -p "Whats your wireless interface ?" interface
       echo $interface
-      if [[ ! -z $interface ]]; then
+      if [[ ! -z "$interface" ]]; then
         echo 'Setup your internet access.'
         wifi-menu $interface
       fi
@@ -323,7 +360,7 @@ echo 'Changing root directory and initalizing the system setup.'
 chmod 777 arch-setup.sh
 mkdir $mnt/temp
 cp arch-setup.sh $mnt/temp/arch-setup.sh
-arch-chroot $mnt /bin/bash -c "chmod 777 /temp/arch-setup.sh; ./temp/arch-setup.sh -k $keyboard -l $locale -L $language -b $boot -s $swap"
+arch-chroot $mnt /bin/bash -c "chmod 777 /temp/arch-setup.sh; ./temp/arch-setup.sh -k $keyboard -l $locale -L $language -b $boot -t $timeZone"
 
 echo "Unmount partitions and finalize installation."
 umount $boot

@@ -13,7 +13,7 @@ echo '#       Definitions    #'
 echo '########################'
 echo
 echo
-while getopts "k:l:L:b:" opt; do
+while getopts "k:l:L:b:t:" opt; do
   case $opt in
     k) keyboard="$OPTARG"
     echo "Keyboard -- $keyboard"
@@ -26,6 +26,9 @@ while getopts "k:l:L:b:" opt; do
     ;;
     b) boot="$OPTARG"
     echo "Boot Partition -- $boot"
+    ;;
+    t) timeZone="$OPTARG"
+    echo "Time Zone -- $timeZone"
     ;;
     \?) echo "Invalid parameter - $OPTARG" >&2
     ;;
@@ -56,42 +59,15 @@ echo
 cat /etc/vconsole.conf
 
 echo
-echo 'The next step will be choose the time zone.'
 
-while [[ true ]]; do
-
-  echo 'Select a time zone to adjust the clock.'
-  read -p 'Type a country, state or province to list related timezones, or 'skip' to GMT 0: ' localtime
-
-  if [[ $localtime == "skip" ]]; then
-    timedatectl set-timezone UTC
-    break
-  fi
-
-  if [[ -n $localtime ]]; then
-    timedatectl list-timezones | grep $localtime
-    if [[ $? -eq 1 ]]; then
-      timedatectl list-timezones
-    fi
-  else
-    timedatectl list-timezones
-  fi
-
-  read -p 'Type timezone of previous list (America/Vancouver):' timeZone
-
-  timedatectl set-timezone $timeZone
-
-  if [[ $? -eq 0 ]]; then
-    echo "$timeZone selected."
-    break
-  fi
-
-done
+echo "The next step will be setup the selected time zone. $timeZone"
+ln -sf /usr/share/zoneinfo/$timeZone /etc/localtime
 
 echo
 echo 'Adjustig time with hardware clock.'
 hwclock --systohc --utc
 echo
+
 echo
 echo '########################'
 echo '#      Netowork &      #'
@@ -403,6 +379,7 @@ while [[ true ]]; do
   echo "exec $deskEnv" >> ~/.xinitrc
   break
 done
+
 
 echo 'Instllation & Setup complete.'
 read -p 'Rebooting your system.'
